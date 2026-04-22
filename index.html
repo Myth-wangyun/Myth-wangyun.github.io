@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Myth Wang · 炫酷个人主页</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- 引入粒子库 -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* 隐藏默认鼠标，用自定义光效 */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0f1e;
+            color: #ffffff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* 自定义鼠标光效 */
+        .cursor-glow {
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, rgba(59,130,246,0.6), rgba(139,92,246,0));
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.05s linear;
+            mix-blend-mode: screen;
+        }
+
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: #3b82f6;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.05s linear;
+        }
+
+        /* 启动层（全屏遮罩，点击播放音乐） */
+        .launch-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0f1e;
+            z-index: 100000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            transition: opacity 0.8s ease, visibility 0.8s;
+            cursor: pointer;
+        }
+
+        .launch-content {
+            text-align: center;
+            animation: pulseGlow 1.5s infinite alternate;
+        }
+
+        .launch-content i {
+            font-size: 80px;
+            color: #3b82f6;
+            margin-bottom: 20px;
+        }
+
+        .launch-content h2 {
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .launch-content p {
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+
+        @keyframes pulseGlow {
+            0% { text-shadow: 0 0 5px #3b82f6; transform: scale(1);}
+            100% { text-shadow: 0 0 25px #8b5cf6; transform: scale(1.05);}
+        }
+
+        /* 粒子背景容器 */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        /* 主要内容（初始隐藏，启动后显示） */
+        .main-content {
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* 英雄区 */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .glow-text {
+            font-size: 4.5rem;
+            font-weight: 800;
+            background: linear-gradient(120deg, #ffffff, #3b82f6, #a855f7);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            margin: 20px 0 30px;
+            opacity: 0.9;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            border: none;
+            box-shadow: 0 0 15px rgba(59,130,246,0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(139,92,246,0.7);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-3px);
+        }
+
+        /* 技能卡片 3D 倾斜效果 */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .skill-card {
+            background: rgba(15, 25, 45, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px 15px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.4s;
+            transform-style: preserve-3d;
+        }
+
+        .skill-card i {
+            font-size: 3rem;
+            color: #3b82f6;
+            margin-bottom: 15px;
+        }
+
+        /* 项目卡片 */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: rgba(10, 20, 35, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #3b82f6;
+            box-shadow: 0 20px 35px -10px rgba(59,130,246,0.3);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #a855f7);
+            border-radius: 2px;
+            transform: translateX(-50%);
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin: 40px 0;
+        }
+
+        .contact-icon {
+            width: 65px;
+            height: 65px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: all 0.3s;
+            color: white;
+            text-decoration: none;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .contact-icon:hover {
+            background: #3b82f6;
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 20px #3b82f6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            opacity: 0.6;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* 滚动动画 */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<!-- 启动层（点击播放音乐） -->
+<div id="launchScreen" class="launch-screen">
+    <div class="launch-content">
+        <i class="fas fa-headphones"></i>
+        <h2>🎧 点击进入永恒之王的世界</h2>
+        <p>永恒之王打开了他的bgm</p>
+    </div>
+</div>
+
+<!-- 鼠标光效 -->
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- 粒子背景 -->
+<div id="particles-js"></div>
+
+<!-- 主内容 -->
+<div class="main-content" id="mainContent">
+    <div class="hero">
+        <div class="container">
+            <div class="avatar fade-up">
+                <i class="fas fa-crown" style="font-size: 80px; color: #ffd966;"></i>
+            </div>
+            <h1 class="glow-text fade-up">Myth Wang</h1>
+            <p class="subtitle fade-up">全栈开发者 · AI 爱好者 · 创造极致体验</p>
+            <div class="btn-group fade-up">
+                <a href="#projects" class="btn btn-primary"><i class="fas fa-rocket"></i> 探索项目</a>
+                <a href="https://github.com/Myth-wangyun" target="_blank" class="btn btn-outline"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+        </div>
+    </div>
+
+    <section id="skills">
+        <div class="container">
+            <h2 class="section-title fade-up">💡 技术光谱</h2>
+            <div class="skills-grid">
+                <div class="skill-card fade-up"><i class="fab fa-python"></i><span>Python</span></div>
+                <div class="skill-card fade-up"><i class="fab fa-js"></i><span>JavaScript</span></div>
+                <div class="skill-card fade-up"><i class="fab fa-react"></i><span>React</span></div>
+                <div class="skill-card fade-up"><i class="fas fa-brain"></i><span>LangChain</span></div>
+                <div class="skill-card fade-up"><i class="fas fa-database"></i><span>SQL</span></div>
+                <div class="skill-card fade-up"><i class="fab fa-git-alt"></i><span>Git/GitHub</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" style="background: rgba(0,0,0,0.3);">
+        <div class="container">
+            <h2 class="section-title fade-up">✨ 代表作品</h2>
+            <div class="projects-grid">
+                <div class="project-card fade-up">
+                    <h3><i class="fas fa-chalkboard-user"></i> 清美教育 AI 助手</h3>
+                    <p>DeepSeek大模型 + 关键词检索，职业教育智能问答机器人，轻量化部署。</p>
+                    <a href="https://github.com/Myth-wangyun/edu-ai" target="_blank" style="color:#3b82f6;">查看详情 →</a>
+                </div>
+                <div class="project-card fade-up">
+                    <h3><i class="fas fa-music"></i> 网易云音乐爬虫</h3>
+                    <p>高效爬取热歌评论、榜单数据，支持CSV导出，用于音乐趋势分析。</p>
+                    <a href="https://github.com/Myth-wangyun/netease-music-crawler" target="_blank" style="color:#3b82f6;">查看详情 →</a>
+                </div>
+                <div class="project-card fade-up">
+                    <h3><i class="fas fa-globe"></i> 炫酷个人主页</h3>
+                    <p>粒子背景、鼠标光效、自动音乐播放，沉浸式展示个人品牌。</p>
+                    <a href="#" style="color:#3b82f6;">正在使用中 →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title fade-up">📬 连接未来</h2>
+            <div class="contact-links">
+                <a href="https://github.com/Myth-wangyun" class="contact-icon fade-up"><i class="fab fa-github"></i></a>
+                <a href="#" class="contact-icon fade-up"><i class="fab fa-twitter"></i></a>
+                <a href="mailto:your@email.com" class="contact-icon fade-up"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Myth Wang · 保持好奇，持续创造 · <i class="fas fa-music"></i> 音乐伴你同行</p>
+    </footer>
+</div>
+
+<audio id="bgMusic" loop preload="auto">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    您的浏览器不支持音频播放。
+</audio>
+
+<script>
+    // 初始化粒子背景
+    particlesJS("particles-js", {
+        "particles": {
+            "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#3b82f6" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.5, "random": true },
+            "size": { "value": 3, "random": true },
+            "line_linked": { "enable": true, "distance": 150, "color": "#8b5cf6", "opacity": 0.2, "width": 1 },
+            "move": { "enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } },
+            "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } }
+        },
+        "retina_detect": true
+    });
+
+    // 鼠标光效移动
+    const glow = document.getElementById('cursorGlow');
+    const dot = document.getElementById('cursorDot');
+    document.addEventListener('mousemove', (e) => {
+        glow.style.transform = `translate(${e.clientX - 15}px, ${e.clientY - 15}px)`;
+        dot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
+    });
+
+    // 启动层 + 音乐自动播放
+    const launchScreen = document.getElementById('launchScreen');
+    const mainContent = document.getElementById('mainContent');
+    const bgMusic = document.getElementById('bgMusic');
+
+    // 尝试自动播放（会被阻止），但用户点击启动层时播放
+    function startExperience() {
+        bgMusic.play().catch(e => console.log("播放失败", e));
+        launchScreen.style.opacity = '0';
+        launchScreen.style.visibility = 'hidden';
+        mainContent.style.opacity = '1';
+        // 滚动动画观察
+        observeFade();
+        // 移除启动层点击监听
+        launchScreen.removeEventListener('click', startExperience);
+    }
+
+    launchScreen.addEventListener('click', startExperience);
+
+    // 滚动动画 Intersection Observer
+    function observeFade() {
+        const faders = document.querySelectorAll('.fade-up');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2, rootMargin: "0px 0px -20px 0px" });
+        faders.forEach(el => observer.observe(el));
+        // 首屏元素立即显示
+        setTimeout(() => {
+            document.querySelectorAll('.hero .fade-up').forEach(el => el.classList.add('visible'));
+        }, 200);
+    }
+
+    // 由于启动层存在，内容初始透明，启动后才显示
+    mainContent.style.opacity = '0';
+</script>
+</body>
+</html>
