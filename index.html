@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Myth Wang · 炫酷个人主页</title>
+    <title>Myth Wang · 个人主页</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -30,24 +30,22 @@
         .btn-primary { background: linear-gradient(45deg, #3b82f6, #8b5cf6); border: none; box-shadow: 0 0 15px rgba(59,130,246,0.5); }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(139,92,246,0.7); }
         .btn-outline:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
-        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 30px; margin: 50px 0; }
-        .skill-card { background: rgba(15, 25, 45, 0.6); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px 15px; text-align: center; border: 1px solid rgba(255,255,255,0.15); transition: all 0.4s; }
-        .skill-card:hover { transform: translateY(-10px); border-color: #3b82f6; box-shadow: 0 10px 30px rgba(59,130,246,0.3); }
-        .skill-card i { font-size: 3rem; color: #3b82f6; margin-bottom: 15px; }
-        .section-title { font-size: 2.5rem; text-align: center; margin-bottom: 50px; position: relative; }
-        .section-title:after { content: ''; position: absolute; bottom: -15px; left: 50%; width: 80px; height: 4px; background: linear-gradient(90deg, #3b82f6, #a855f7); border-radius: 2px; transform: translateX(-50%); }
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom: 60px; }
-        .project-card { background: rgba(10, 20, 35, 0.7); backdrop-filter: blur(12px); border-radius: 28px; padding: 25px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.4s; }
-        .project-card:hover { transform: translateY(-10px) scale(1.02); border-color: #3b82f6; box-shadow: 0 20px 35px -10px rgba(59,130,246,0.4); }
-        .project-card .project-icon { font-size: 3rem; margin-bottom: 20px; display: block; }
-        .project-card h3 { font-size: 1.4rem; margin-bottom: 12px; }
-        .project-card p { opacity: 0.75; font-size: 0.95rem; line-height: 1.6; }
-        .project-card .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-        .project-card .tag { background: rgba(59,130,246,0.2); color: #60a5fa; padding: 5px 14px; border-radius: 20px; font-size: 0.85rem; border: 1px solid rgba(59,130,246,0.3); }
-        .project-card .project-links { display: flex; gap: 15px; margin-top: 18px; }
-        .project-card .project-link { color: #a855f7; font-size: 1.2rem; transition: all 0.3s; }
-        .project-card .project-link:hover { color: #3b82f6; transform: scale(1.2); }
-        .timeline-section { padding: 100px 0; }
+        .section-title { font-size: 2.5rem; text-align: center; margin: 60px 0 40px; position: relative; color: #ffffff; }
+        .section-title .emoji { font-size: 1.8rem; margin: 0 8px; }
+        .section-title::after { content: ''; position: absolute; bottom: -15px; left: 50%; width: 80px; height: 4px; background: linear-gradient(90deg, #3b82f6, #a855f7); border-radius: 2px; transform: translateX(-50%); }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .project-card { background: rgba(10, 20, 35, 0.7); backdrop-filter: blur(12px); border-radius: 20px; padding: 28px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.4s; }
+        .project-card:hover { transform: translateY(-8px) scale(1.02); border-color: #3b82f6; box-shadow: 0 20px 35px -10px rgba(59,130,246,0.4); }
+        .project-card h3 { font-size: 1.3rem; margin-bottom: 12px; color: #fff; }
+        .project-card p { opacity: 0.75; font-size: 0.9rem; line-height: 1.7; margin-bottom: 15px; }
+        .project-card .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
+        .project-card .tag { background: rgba(59,130,246,0.2); color: #60a5fa; padding: 4px 12px; border-radius: 15px; font-size: 0.8rem; border: 1px solid rgba(59,130,246,0.3); }
+        .project-card .project-link { color: #a855f7; font-size: 0.95rem; transition: all 0.3s; text-decoration: none; }
+        .project-card .project-link:hover { color: #3b82f6; }
+        .locked-project { position: relative; }
+        .locked-project::after { content: '🔒'; position: absolute; top: 15px; right: 15px; font-size: 1.2rem; }
+        .dev-project .game-badge { background: linear-gradient(45deg, #f59e0b, #ef4444); color: white; padding: 4px 12px; border-radius: 15px; font-size: 0.8rem; display: inline-block; margin-bottom: 10px; }
+        .timeline-section { padding: 80px 0; }
         .timeline { position: relative; max-width: 900px; margin: 0 auto; }
         .timeline::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 3px; height: 100%; background: linear-gradient(180deg, #3b82f6, #a855f7); border-radius: 3px; }
         .timeline-item { display: flex; justify-content: flex-end; padding-right: 50%; margin-bottom: 50px; position: relative; }
@@ -64,7 +62,11 @@
         .fade-up.visible { opacity: 1; transform: translateY(0); }
         .music-toggle { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; border-radius: 50%; background: rgba(59,130,246,0.9); border: none; color: white; font-size: 1.4rem; cursor: pointer; z-index: 1000; box-shadow: 0 5px 20px rgba(59,130,246,0.5); transition: all 0.3s; }
         .music-toggle:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(139,92,246,0.6); }
-        @media (max-width: 768px) { .glow-text { font-size: 2.5rem; } .subtitle { font-size: 1rem; } .btn-group { flex-direction: column; align-items: center; } .timeline::before { left: 20px; } .timeline-item, .timeline-item:nth-child(even) { padding-left: 50px; padding-right: 0; justify-content: flex-start; } .timeline-item::before, .timeline-item:nth-child(even)::before { left: 10px; right: auto; } .timeline-content { max-width: 100%; } }
+        .game-preview { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.1)); border: 1px solid rgba(245, 158, 11, 0.3); margin-top: 15px; padding: 15px; border-radius: 12px; }
+        .game-preview h4 { color: #f59e0b; margin-bottom: 5px; }
+        .game-preview small { color: #9ca3af; font-size: 0.8rem; }
+        .game-preview .btn-group { margin-top: 12px; justify-content: center; }
+        @media (max-width: 768px) { .glow-text { font-size: 2.5rem; } .subtitle { font-size: 1rem; } .btn-group { flex-direction: column; align-items: center; } .projects-grid { grid-template-columns: 1fr; } .timeline::before { left: 20px; } .timeline-item, .timeline-item:nth-child(even) { padding-left: 50px; padding-right: 0; justify-content: flex-start; } .timeline-item::before, .timeline-item:nth-child(even)::before { left: 10px; right: auto; } .timeline-content { max-width: 100%; } }
     </style>
 </head>
 <body>
@@ -85,81 +87,108 @@
                 <p class="subtitle fade-up">全栈开发者 · 游戏制作人 · 音乐爱好者</p>
                 <div class="btn-group fade-up">
                     <a href="https://github.com/myth-wangyun" target="_blank" class="btn btn-primary">GitHub主页</a>
-                    <a href="#projects" class="btn btn-outline">项目作品</a>
-                    <a href="#about" class="btn btn-outline">关于我</a>
-                </div>
-                <div class="skills-grid fade-up">
-                    <div class="skill-card"><i class="fab fa-html5"></i><p>HTML/CSS</p></div>
-                    <div class="skill-card"><i class="fab fa-js"></i><p>JavaScript</p></div>
-                    <div class="skill-card"><i class="fab fa-react"></i><p>React</p></div>
-                    <div class="skill-card"><i class="fab fa-node-js"></i><p>Node.js</p></div>
-                    <div class="skill-card"><i class="fas fa-gamepad"></i><p>游戏开发</p></div>
-                    <div class="skill-card"><i class="fas fa-database"></i><p>数据库</p></div>
+                    <a href="#opensource" class="btn btn-outline">开源作品</a>
+                    <a href="#other" class="btn btn-outline">其他项目</a>
+                    <a href="#about" class="btn btn-outline">个人历程</a>
                 </div>
             </div>
         </section>
-        <section id="projects" class="container" style="padding: 80px 0;">
-            <h2 class="section-title fade-up">项目作品</h2>
+        
+        <section id="opensource" class="container">
+            <h2 class="section-title fade-up"><span class="emoji">✨</span>开源作品<span class="emoji">✨</span></h2>
             <div class="projects-grid">
                 <div class="project-card fade-up">
-                    <i class="fas fa-gamepad project-icon" style="color: #3b82f6;"></i>
-                    <h3>Python 2048</h3>
-                    <p>经典2048益智游戏的Python实现，支持图形界面，流畅的滑动动画与分数系统，适合初学者学习Python图形编程。</p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span><span class="tag">Pygame</span><span class="tag">GUI</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/myth-wangyun/2048" target="_blank" class="project-link"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-                <div class="project-card fade-up">
-                    <i class="fas fa-frog project-icon" style="color: #22c55e;"></i>
-                    <h3>Flappy Bird</h3>
-                    <p>风靡全球的Flappy Bird游戏像素级复刻，考验反应力的经典挑战，简洁耐玩的休闲小游戏。</p>
-                    <div class="project-tags">
-                        <span class="tag">JavaScript</span><span class="tag">Canvas</span><span class="tag">游戏</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://myth-wangyun.github.io/FlappyBird/" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="https://github.com/myth-wangyun/FlappyBird" target="_blank" class="project-link"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-                <div class="project-card fade-up">
-                    <i class="fas fa-puzzle-piece project-icon" style="color: #f59e0b;"></i>
-                    <h3>拼图游戏</h3>
-                    <p>一款精美的在线拼图游戏，支持自定义图片，多种难度等级，让你在娱乐中锻炼观察力和耐心。</p>
+                    <h3>二维码生成器</h3>
+                    <p>纯前端工具，输入文本/网址实时生成二维码，支持下载图片。实用轻量。</p>
                     <div class="project-tags">
                         <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
                     </div>
-                    <div class="project-links">
-                        <a href="https://github.com/myth-wangyun/jigsaw" target="_blank" class="project-link"><i class="fab fa-github"></i></a>
-                    </div>
+                    <a href="#" class="project-link">在线体验 →</a>
                 </div>
                 <div class="project-card fade-up">
-                    <i class="fas fa-address-card project-icon" style="color: #a855f7;"></i>
-                    <h3>个人主页</h3>
-                    <p>这个炫酷的互动式个人主页，展示项目作品、技术栈与个人经历，配备粒子背景、音乐播放与滚动动画。</p>
+                    <h3>极简在线商店</h3>
+                    <p>商品卡片、动态筛选、购物车、支付模拟（Stripe测试）。完整电商前端演示。</p>
+                    <div class="project-tags">
+                        <span class="tag">Vue</span><span class="tag">Stripe</span><span class="tag">CSS</span>
+                    </div>
+                    <a href="https://github.com/myth-wangyun/shop-demo" target="_blank" class="project-link">查看源码 →</a>
+                </div>
+                <div class="project-card fade-up">
+                    <h3>教育AI助手</h3>
+                    <p>DeepSeek大模型+关键词检索，职业教育智能问答机器人，轻量化部署。</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span><span class="tag">DeepSeek</span><span class="tag">RAG</span>
+                    </div>
+                    <a href="#" class="project-link">查看详情 →</a>
+                </div>
+                <div class="project-card fade-up">
+                    <h3>网易爬虫</h3>
+                    <p>高效爬取评论、榜单数据，支持CSV导出，用于音乐趋势分析。</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span><span class="tag">爬虫</span><span class="tag">数据分析</span>
+                    </div>
+                    <a href="#" class="project-link">查看详情 →</a>
+                </div>
+                <div class="project-card fade-up">
+                    <h3>线上智能答疑系统</h3>
+                    <p>Spring Boot + Vue + MySQL，学生提问、教师回答、智能助手辅助。前后端分离完整项目。</p>
+                    <div class="project-tags">
+                        <span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">Vue</span>
+                    </div>
+                    <a href="https://github.com/myth-wangyun/qa-system" target="_blank" class="project-link">查看源码 →</a>
+                </div>
+                <div class="project-card fade-up">
+                    <h3>炫酷个人主页</h3>
+                    <p>粒子背景、鼠标光效、自动音乐播放，沉浸式展示个人品牌。</p>
                     <div class="project-tags">
                         <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
                     </div>
-                    <div class="project-links">
-                        <a href="https://myth-wangyun.github.io/" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i></a>
-                        <a href="https://github.com/myth-wangyun/myth-wangyun.github.io" target="_blank" class="project-link"><i class="fab fa-github"></i></a>
+                    <span class="project-link" style="color: #22c55e;">正在使用中 ✓</span>
+                </div>
+            </div>
+        </section>
+        
+        <section id="other" class="container">
+            <h2 class="section-title fade-up"><span class="emoji">🔒</span>其他项目 & 游戏<span class="emoji">🔒</span></h2>
+            <div class="projects-grid">
+                <div class="project-card fade-up locked-project">
+                    <h3>公司系统后端（保密）</h3>
+                    <p>参与企业级管理系统后端开发，基于Spring Boot + MyBatis + Redis，负责权限管理、数据报表等模块。</p>
+                    <div class="project-tags">
+                        <span class="tag">内部项目</span><span class="tag">保密</span>
+                    </div>
+                    <div style="margin-top: 10px; color: #9ca3af; font-size: 0.85rem;">
+                        <span>技术栈：</span>Java, Spring Boot, MySQL, Redis, JWT
+                    </div>
+                </div>
+                <div class="project-card fade-up dev-project">
+                    <span class="game-badge">微信小游戏·开发中</span>
+                    <h3>天行无常</h3>
+                    <p>放置类 剧情向 末世冒险游戏</p>
+                    <div class="game-preview">
+                        <h4>✨✨天行无常✨✨</h4>
+                        <small>The Impermanence of Heaven · 版本1.0.0</small>
+                        <div class="btn-group">
+                            <a href="#" class="btn btn-outline" style="padding: 8px 20px; font-size: 0.85rem;">▶ 开始游戏</a>
+                            <a href="#" class="btn btn-outline" style="padding: 8px 20px; font-size: 0.85rem;">🎮 新游戏</a>
+                        </div>
                     </div>
                 </div>
                 <div class="project-card fade-up">
-                    <i class="fas fa-file-alt project-icon" style="color: #06b6d4;"></i>
                     <h3>论文助手</h3>
                     <p>高效的论文代码高亮工具，支持多种编程语言的语法高亮显示，让代码片段在论文中呈现得更专业美观。</p>
                     <div class="project-tags">
                         <span class="tag">Python</span><span class="tag">高亮</span><span class="tag">工具</span>
                     </div>
-                    <div class="project-links">
-                        <a href="https://github.com/Myth-wangyun/lwgeshi" target="_blank" class="project-link"><i class="fab fa-github"></i></a>
-                    </div>
+                    <a href="https://github.com/Myth-wangyun/lwgeshi" target="_blank" class="project-link">查看源码 →</a>
                 </div>
             </div>
+            <div style="text-align: center; margin-top: 40px;" class="fade-up">
+                <p style="opacity: 0.7; margin-bottom: 15px;">持续输出实用工具与创意项目，欢迎关注我的GitHub</p>
+                <a href="https://github.com/myth-wangyun" target="_blank" class="btn btn-primary">前往GitHub →</a>
+            </div>
         </section>
+        
         <section id="about" class="timeline-section">
             <div class="container">
                 <h2 class="section-title fade-up">个人历程</h2>
@@ -195,6 +224,7 @@
                 </div>
             </div>
         </section>
+        
         <footer>
             <p>© 2025 Myth Wang · 保持好奇，持续创造 · <i class="fas fa-music"></i> 音乐伴你同行</p>
         </footer>
