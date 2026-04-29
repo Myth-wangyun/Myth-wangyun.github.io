@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Myth Wang · 炫酷个人主页</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body { font-family: 'Poppins', sans-serif; background: #0a0f1e; color: #ffffff; overflow-x: hidden; scroll-behavior: smooth; }
+        .cursor-glow { width: 30px; height: 30px; background: radial-gradient(circle, rgba(59,130,246,0.6), rgba(139,92,246,0)); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.05s linear; mix-blend-mode: screen; }
+        .cursor-dot { width: 6px; height: 6px; background: #3b82f6; border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000; transition: transform 0.05s linear; }
+        .launch-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0a0f1e; z-index: 100000; display: flex; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(10px); transition: opacity 0.8s ease, visibility 0.8s; cursor: pointer; }
+        .launch-content { text-align: center; animation: pulseGlow 1.5s infinite alternate; }
+        .launch-content i { font-size: 80px; color: #3b82f6; margin-bottom: 20px; }
+        .launch-content h2 { font-size: 2rem; letter-spacing: 2px; }
+        .launch-content p { opacity: 0.7; margin-top: 10px; }
+        @keyframes pulseGlow { 0% { text-shadow: 0 0 5px #3b82f6; transform: scale(1);} 100% { text-shadow: 0 0 25px #8b5cf6; transform: scale(1.05);} }
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 0; }
+        .main-content { position: relative; z-index: 2; opacity: 0; transition: opacity 1s ease; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; }
+        .glow-text { font-size: 4.5rem; font-weight: 800; background: linear-gradient(120deg, #ffffff, #3b82f6, #a855f7); background-size: 200% auto; background-clip: text; -webkit-background-clip: text; color: transparent; animation: shine 3s linear infinite; }
+        @keyframes shine { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+        .subtitle { font-size: 1.3rem; margin: 20px 0 30px; opacity: 0.9; }
+        .btn-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 12px 32px; border-radius: 50px; font-weight: 600; text-decoration: none; transition: all 0.3s; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); color: white; letter-spacing: 1px; }
+        .btn-primary { background: linear-gradient(45deg, #3b82f6, #8b5cf6); border: none; box-shadow: 0 0 15px rgba(59,130,246,0.5); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 25px rgba(139,92,246,0.7); }
+        .btn-outline:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 30px; margin: 50px 0; }
+        .skill-card { background: rgba(15, 25, 45, 0.6); backdrop-filter: blur(10px); border-radius: 20px; padding: 30px 15px; text-align: center; border: 1px solid rgba(255,255,255,0.15); transition: all 0.4s; }
+        .skill-card:hover { transform: translateY(-10px); border-color: #3b82f6; box-shadow: 0 10px 30px rgba(59,130,246,0.3); }
+        .skill-card i { font-size: 3rem; color: #3b82f6; margin-bottom: 15px; }
+        .section-title { font-size: 2.5rem; text-align: center; margin-bottom: 50px; position: relative; }
+        .section-title:after { content: ''; position: absolute; bottom: -15px; left: 50%; width: 80px; height: 4px; background: linear-gradient(90deg, #3b82f6, #a855f7); border-radius: 2px; transform: translateX(-50%); }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom: 60px; }
+        .project-card { background: rgba(10, 20, 35, 0.7); backdrop-filter: blur(12px); border-radius: 28px; padding: 25px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.4s; }
+        .project-card:hover { transform: translateY(-10px) scale(1.02); border-color: #3b82f6; box-shadow: 0 20px 35px -10px rgba(59,130,246,0.4); }
+        .project-card .project-icon { font-size: 3rem; margin-bottom: 20px; display: block; }
+        .project-card h3 { font-size: 1.4rem; margin-bottom: 12px; }
+        .project-card p { opacity: 0.75; font-size: 0.95rem; line-height: 1.6; }
+        .project-card .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+        .project-card .tag { background: rgba(59,130,246,0.2); color: #60a5fa; padding: 5px 14px; border-radius: 20px; font-size: 0.85rem; border: 1px solid rgba(59,130,246,0.3); }
+        .project-card .project-links { display: flex; gap: 15px; margin-top: 18px; }
+        .project-card .project-link { color: #a855f7; font-size: 1.2rem; transition: all 0.3s; }
+        .project-card .project-link:hover { color: #3b82f6; transform: scale(1.2); }
+        .timeline-section { padding: 100px 0; }
+        .timeline { position: relative; max-width: 900px; margin: 0 auto; }
+        .timeline::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 3px; height: 100%; background: linear-gradient(180deg, #3b82f6, #a855f7); border-radius: 3px; }
+        .timeline-item { display: flex; justify-content: flex-end; padding-right: 50%; margin-bottom: 50px; position: relative; }
+        .timeline-item:nth-child(even) { justify-content: flex-start; padding-right: 0; padding-left: 50%; }
+        .timeline-item::before { content: ''; position: absolute; width: 20px; height: 20px; background: #3b82f6; border-radius: 50%; top: 0; border: 4px solid #0a0f1e; }
+        .timeline-item:nth-child(odd)::before { right: -10px; }
+        .timeline-item:nth-child(even)::before { left: -10px; }
+        .timeline-content { background: rgba(15, 25, 45, 0.8); backdrop-filter: blur(10px); border-radius: 16px; padding: 25px; border: 1px solid rgba(255,255,255,0.1); max-width: 400px; }
+        .timeline-content h3 { font-size: 1.2rem; margin-bottom: 8px; }
+        .timeline-content .date { color: #60a5fa; font-size: 0.9rem; margin-bottom: 10px; display: block; }
+        .timeline-content p { opacity: 0.8; font-size: 0.95rem; line-height: 1.6; }
+        footer { text-align: center; padding: 40px 0; opacity: 0.7; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 60px; }
+        .fade-up { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+        .music-toggle { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; border-radius: 50%; background: rgba(59,130,246,0.9); border: none; color: white; font-size: 1.4rem; cursor: pointer; z-index: 1000; box-shadow: 0 5px 20px rgba(59,130,246,0.5); transition: all 0.3s; }
+        .music-toggle:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(139,92,246,0.6); }
+        @media (max-width: 768px) { .glow-text { font-size: 2.5rem; } .subtitle { font-size: 1rem; } .btn-group { flex-direction: column; align-items: center; } .timeline::before { left: 20px; } .timeline-item, .timeline-item:nth-child(even) { padding-left: 50px; padding-right: 0; justify-content: flex-start; } .timeline-item::before, .timeline-item:nth-child(even)::before { left: 10px; right: auto; } .timeline-content { max-width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="launch-screen" id="launchScreen">
+        <div class="launch-content">
+            <i class="fas fa-rocket"></i>
+            <h2>MYTH WANG</h2>
+            <p>点击任意位置启动体验</p>
+        </div>
+    </div>
+    <div id="particles-js"></div>
+    <div class="main-content" id="mainContent">
+        <section class="hero">
+            <div class="container">
+                <h1 class="glow-text fade-up">Myth Wang</h1>
+                <p class="subtitle fade-up">全栈开发者 · 游戏制作人 · 音乐爱好者</p>
+                <div class="btn-group fade-up">
+                    <a href="https://github.com/myth-wangyun" target="_blank" class="btn btn-primary">GitHub主页</a>
+                    <a href="#projects" class="btn btn-outline">项目作品</a>
+                    <a href="#about" class="btn btn-outline">关于我</a>
+                </div>
+                <div class="skills-grid fade-up">
+                    <div class="skill-card"><i class="fab fa-html5"></i><p>HTML/CSS</p></div>
+                    <div class="skill-card"><i class="fab fa-js"></i><p>JavaScript</p></div>
+                    <div class="skill-card"><i class="fab fa-react"></i><p>React</p></div>
+                    <div class="skill-card"><i class="fab fa-node-js"></i><p>Node.js</p></div>
+                    <div class="skill-card"><i class="fas fa-gamepad"></i><p>游戏开发</p></div>
+                    <div class="skill-card"><i class="fas fa-database"></i><p>数据库</p></div>
+                </div>
+            </div>
+        </section>
+        <section id="projects" class="container" style="padding: 80px 0;">
+            <h2 class="section-title fade-up">项目作品</h2>
+            <div class="projects-grid">
+                <div class="project-card fade-up">
+                    <i class="fas fa-gamepad project-icon" style="color: #3b82f6;"></i>
+                    <h3>Python 2048</h3>
+                    <p>经典2048益智游戏的Python实现，支持图形界面，流畅的滑动动画与分数系统，适合初学者学习Python图形编程。</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span><span class="tag">Pygame</span><span class="tag">GUI</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/myth-wangyun/2048" target="_blank" class="project-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="project-card fade-up">
+                    <i class="fas fa-frog project-icon" style="color: #22c55e;"></i>
+                    <h3>Flappy Bird</h3>
+                    <p>风靡全球的Flappy Bird游戏像素级复刻，考验反应力的经典挑战，简洁耐玩的休闲小游戏。</p>
+                    <div class="project-tags">
+                        <span class="tag">JavaScript</span><span class="tag">Canvas</span><span class="tag">游戏</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://myth-wangyun.github.io/FlappyBird/" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                        <a href="https://github.com/myth-wangyun/FlappyBird" target="_blank" class="project-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="project-card fade-up">
+                    <i class="fas fa-puzzle-piece project-icon" style="color: #f59e0b;"></i>
+                    <h3>拼图游戏</h3>
+                    <p>一款精美的在线拼图游戏，支持自定义图片，多种难度等级，让你在娱乐中锻炼观察力和耐心。</p>
+                    <div class="project-tags">
+                        <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/myth-wangyun/jigsaw" target="_blank" class="project-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="project-card fade-up">
+                    <i class="fas fa-address-card project-icon" style="color: #a855f7;"></i>
+                    <h3>个人主页</h3>
+                    <p>这个炫酷的互动式个人主页，展示项目作品、技术栈与个人经历，配备粒子背景、音乐播放与滚动动画。</p>
+                    <div class="project-tags">
+                        <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://myth-wangyun.github.io/" target="_blank" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                        <a href="https://github.com/myth-wangyun/myth-wangyun.github.io" target="_blank" class="project-link"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="about" class="timeline-section">
+            <div class="container">
+                <h2 class="section-title fade-up">个人历程</h2>
+                <div class="timeline">
+                    <div class="timeline-item fade-up">
+                        <div class="timeline-content">
+                            <h3>开始编程之旅</h3>
+                            <span class="date">2024年</span>
+                            <p>从Python基础语法开始，踏上了编程学习之路，对游戏开发产生了浓厚兴趣。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-up">
+                        <div class="timeline-content">
+                            <h3>首个游戏作品</h3>
+                            <span class="date">2024年</span>
+                            <p>完成了第一个完整的Python 2048游戏项目，积累了游戏开发的核心经验。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-up">
+                        <div class="timeline-content">
+                            <h3>前端技术进阶</h3>
+                            <span class="date">2025年</span>
+                            <p>深入学习HTML、CSS、JavaScript，开始开发网页小游戏与互动式个人主页。</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-up">
+                        <div class="timeline-content">
+                            <h3>持续成长中</h3>
+                            <span class="date">未来</span>
+                            <p>继续探索全栈开发，努力提升技术深度与广度，创造更多有趣的项目。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <p>© 2025 Myth Wang · 保持好奇，持续创造 · <i class="fas fa-music"></i> 音乐伴你同行</p>
+        </footer>
+    </div>
+    <button class="music-toggle" id="musicToggle"><i class="fas fa-volume-up"></i></button>
+    <audio id="bgMusic" loop preload="auto"><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
+    <script>
+        particlesJS("particles-js", {"particles":{"number":{"value":80,"density":{"enable":true,"value_area":800}},"color":{"value":"#3b82f6"},"shape":{"type":"circle"},"opacity":{"value":0.5,"random":true},"size":{"value":3,"random":true},"line_linked":{"enable":true,"distance":150,"color":"#8b5cf6","opacity":0.2,"width":1}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":true,"mode":"repulse"},"onclick":{"enable":true,"mode":"push"}},"modes":{"repulse":{"distance":100,"duration":0.4},"push":{"particles_nb":4}}},"retina_detect":true});
+        const glow=document.getElementById('cursorGlow'),dot=document.getElementById('cursorDot');
+        document.addEventListener('mousemove',(e)=>{glow.style.transform=`translate(${e.clientX-15}px,${e.clientY-15}px)`;dot.style.transform=`translate(${e.clientX-3}px,${e.clientY-3}px)`;});
+        const launchScreen=document.getElementById('launchScreen'),mainContent=document.getElementById('mainContent'),bgMusic=document.getElementById('bgMusic'),musicToggle=document.getElementById('musicToggle');
+        let isPlaying=false;
+        function startExperience(){bgMusic.play().catch(e=>console.log("播放失败",e));launchScreen.style.opacity='0';launchScreen.style.visibility='hidden';mainContent.style.opacity='1';observeFade();launchScreen.removeEventListener('click',startExperience);}
+        launchScreen.addEventListener('click',startExperience);
+        musicToggle.addEventListener('click',()=>{if(isPlaying){bgMusic.pause();musicToggle.innerHTML='<i class="fas fa-volume-mute"></i>';}else{bgMusic.play();musicToggle.innerHTML='<i class="fas fa-volume-up"></i>';}isPlaying=!isPlaying;});
+        function observeFade(){document.querySelectorAll('.fade-up').forEach(el=>{const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}});},{threshold:0.2,rootMargin:"0px 0px -20px 0px"});observer.observe(el);});setTimeout(()=>{document.querySelectorAll('.hero .fade-up').forEach(el=>el.classList.add('visible'));},200);}
+        mainContent.style.opacity='0';
+    </script>
+</body>
+</html>
