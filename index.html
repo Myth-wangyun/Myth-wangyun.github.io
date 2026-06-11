@@ -632,13 +632,23 @@
         
         function initSkillGraph() {
             const canvas = document.getElementById('skill-graph');
-            const ctx = canvas.getContext('2d');
             const container = document.getElementById('skill-graph-container');
+            
+            if (!canvas || !container) {
+                console.log('找不到canvas或container');
+                return;
+            }
+            
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                console.log('无法获取canvas上下文');
+                return;
+            }
             
             // 设置canvas尺寸
             function resize() {
-                canvas.width = container.clientWidth;
-                canvas.height = container.clientHeight;
+                canvas.width = container.clientWidth || 800;
+                canvas.height = container.clientHeight || 500;
             }
             resize();
             window.addEventListener('resize', resize);
@@ -850,25 +860,30 @@
         // ===== 主流程 =====
         let isPlaying=false;
         function startExperience(){
-            // 播放雷电动画
-            createLightning();
+            try {
+                // 播放雷电动画
+                createLightning();
+            } catch(e) {
+                console.log('雷电动画错误:', e);
+            }
             
-            // 延迟显示主内容
-            setTimeout(() => {
-                bgMusic.play().catch(e=>console.log("播放失败",e));
-                lyricsPanel.classList.remove('hidden');
-                launchScreen.style.opacity='0';
-                launchScreen.style.visibility='hidden';
-                mainContent.style.opacity='1';
-                observeFade();
-                
-                // 初始化力向图
-                setTimeout(() => {
-                    initSkillGraph();
-                }, 500);
-            }, 600);
-            
+            // 显示主内容
+            bgMusic.play().catch(e=>console.log("播放失败",e));
+            lyricsPanel.classList.remove('hidden');
+            launchScreen.style.opacity='0';
+            launchScreen.style.visibility='hidden';
+            mainContent.style.opacity='1';
+            observeFade();
             launchScreen.removeEventListener('click',startExperience);
+            
+            // 初始化力向图
+            setTimeout(() => {
+                try {
+                    initSkillGraph();
+                } catch(e) {
+                    console.log('力向图初始化错误:', e);
+                }
+            }, 800);
         }
         launchScreen.addEventListener('click',startExperience);
         musicToggle.addEventListener('click',()=>{
