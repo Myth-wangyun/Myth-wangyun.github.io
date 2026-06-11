@@ -18,6 +18,69 @@
         .launch-content h2 { font-size: 2rem; letter-spacing: 2px; }
         .launch-content p { opacity: 0.7; margin-top: 10px; }
         @keyframes pulseGlow { 0% { text-shadow: 0 0 5px #3b82f6; transform: scale(1);} 100% { text-shadow: 0 0 25px #8b5cf6; transform: scale(1.05);} }
+        
+        /* 雷电动画层 */
+        .lightning-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100001;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .lightning-overlay.active { opacity: 1; }
+        .lightning-bolt {
+            position: absolute;
+            width: 3px;
+            height: 0;
+            background: linear-gradient(to bottom, #fff, #60a5fa, #3b82f6);
+            filter: drop-shadow(0 0 10px #60a5fa) drop-shadow(0 0 30px #3b82f6);
+            animation: lightningStrike 0.15s ease-out forwards;
+        }
+        @keyframes lightningStrike {
+            0% { height: 0; opacity: 1; }
+            50% { height: 100vh; opacity: 1; }
+            100% { height: 100vh; opacity: 0; }
+        }
+        .lightning-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            opacity: 0;
+            animation: flashBang 0.3s ease-out forwards;
+        }
+        @keyframes flashBang {
+            0% { opacity: 0.8; }
+            100% { opacity: 0; }
+        }
+        
+        /* 力向图技能展示 */
+        #skill-graph-container {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            margin: 30px 0;
+        }
+        #skill-graph {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .skill-graph-info {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+        
         #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 0; }
         
         /* 两侧特效容器 */
@@ -171,6 +234,10 @@
 <body>
     <div class="cursor-glow" id="cursorGlow"></div>
     <div class="cursor-dot" id="cursorDot"></div>
+    <!-- 雷电动画层 -->
+    <div class="lightning-overlay" id="lightningOverlay"></div>
+    
+    <!-- 启动屏幕 -->
     <div class="launch-screen" id="launchScreen">
         <div class="launch-content">
             <i class="fas fa-rocket"></i>
@@ -208,97 +275,10 @@
         
         <section id="skills" class="container skills-section">
             <h2 class="section-title fade-up"><span class="emoji">🛠️</span>技术栈<span class="emoji">🛠️</span></h2>
-            <div class="skills-container">
-                <div class="skill-category fade-up">
-                    <h3><i class="fas fa-code"></i> 前端开发</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag"><span class="level"></span> HTML5</span>
-                        <span class="skill-tag"><span class="level"></span> CSS3</span>
-                        <span class="skill-tag"><span class="level"></span> JavaScript (ES6+)</span>
-                        <span class="skill-tag"><span class="level"></span> TypeScript</span>
-                        <span class="skill-tag"><span class="level"></span> Vue.js</span>
-                        <span class="skill-tag"><span class="level"></span> React</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Next.js</span>
-                        <span class="skill-tag"><span class="level"></span> Tailwind CSS</span>
-                        <span class="skill-tag"><span class="level"></span> SCSS/Less</span>
-                        <span class="skill-tag"><span class="level"></span> Canvas API</span>
-                        <span class="skill-tag"><span class="level"></span> Bootstrap</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Ant Design</span>
-                    </div>
-                </div>
-                <div class="skill-category fade-up">
-                    <h3><i class="fas fa-server"></i> 后端开发</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag"><span class="level"></span> Java</span>
-                        <span class="skill-tag"><span class="level"></span> Python</span>
-                        <span class="skill-tag"><span class="level"></span> Spring Boot</span>
-                        <span class="skill-tag"><span class="level"></span> Spring MVC</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> MyBatis</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Flask</span>
-                        <span class="skill-tag"><span class="level"></span> Node.js</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Express</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> RESTful API</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> GraphQL</span>
-                    </div>
-                </div>
-                <div class="skill-category fade-up">
-                    <h3><i class="fas fa-database"></i> 数据库与存储</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag"><span class="level"></span> MySQL</span>
-                        <span class="skill-tag"><span class="level"></span> Redis</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> MongoDB</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> SQLite</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Elasticsearch</span>
-                    </div>
-                </div>
-                <div class="skill-category fade-up">
-                    <h3><i class="fas fa-brain"></i> 人工智能</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag"><span class="level"></span> DeepSeek</span>
-                        <span class="skill-tag"><span class="level"></span> 大语言模型 (LLM)</span>
-                        <span class="skill-tag"><span class="level"></span> RAG 检索增强</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> LangChain</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> 向量数据库</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Prompt 工程</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Embedding</span>
-                    </div>
-                </div>
-                <div class="skill-category fade-up">
-                    <h3><i class="fas fa-robot"></i> 游戏开发</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag"><span class="level"></span> Pygame</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Unity (C#)</span>
-                        <span class="skill-tag"><span class="level"></span> HTML5 游戏</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> 微信小游戏</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Phaser.js</span>
-                    </div>
-                </div>
-                <div class="skill-category fade-up">
-                    <h3><i class="fas fa-cogs"></i> 工具与DevOps</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag"><span class="level"></span> Git</span>
-                        <span class="skill-tag"><span class="level"></span> GitHub</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Docker</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Linux</span>
-                        <span class="skill-tag"><span class="level"></span> npm / pnpm</span>
-                        <span class="skill-tag"><span class="level"></span> Webpack / Vite</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> JWT</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> OAuth</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Nginx</span>
-                    </div>
-                </div>
-                <div class="skill-category fade-up">
-                    <h3><i class="fas fa-spider"></i> 爬虫与数据</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag"><span class="level"></span> Python 爬虫</span>
-                        <span class="skill-tag"><span class="level"></span> Requests</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Scrapy</span>
-                        <span class="skill-tag"><span class="level"></span> Pandas</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> Selenium</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> 数据分析</span>
-                        <span class="skill-tag"><span class="level intermediate"></span> CSV / Excel</span>
-                    </div>
-                </div>
+            <p class="fade-up" style="text-align:center;color:rgba(255,255,255,0.6);margin-bottom:20px;">💡 交互式力向图 - 拖拽节点探索技能关系</p>
+            <div id="skill-graph-container" class="fade-up">
+                <canvas id="skill-graph"></canvas>
+                <div class="skill-graph-info">🖱️ 拖拽节点 | 🔍 悬停查看详情 | 🎨 颜色代表技能领域</div>
             </div>
         </section>
         
@@ -517,6 +497,336 @@
     </div>
     
     <script>
+        // ===== 雷电动画 =====
+        function createLightning() {
+            const overlay = document.getElementById('lightningOverlay');
+            overlay.classList.add('active');
+            overlay.innerHTML = '';
+            
+            // 创建闪光
+            const flash = document.createElement('div');
+            flash.className = 'lightning-flash';
+            overlay.appendChild(flash);
+            
+            // 创建多条闪电
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const bolt = document.createElement('div');
+                    bolt.className = 'lightning-bolt';
+                    bolt.style.left = (20 + Math.random() * 60) + '%';
+                    bolt.style.top = '0';
+                    bolt.style.transform = `rotate(${-10 + Math.random() * 20}deg)`;
+                    overlay.appendChild(bolt);
+                }, i * 50);
+            }
+            
+            // 随机位置的闪电分支
+            setTimeout(() => {
+                for (let i = 0; i < 8; i++) {
+                    const branch = document.createElement('div');
+                    branch.className = 'lightning-bolt';
+                    branch.style.left = (10 + Math.random() * 80) + '%';
+                    branch.style.top = (Math.random() * 50) + '%';
+                    branch.style.height = '150px';
+                    branch.style.width = '2px';
+                    branch.style.transform = `rotate(${-45 + Math.random() * 90}deg)`;
+                    overlay.appendChild(branch);
+                }
+            }, 100);
+            
+            setTimeout(() => {
+                overlay.classList.remove('active');
+            }, 500);
+        }
+        
+        // ===== 力向图技能展示 =====
+        const skillData = {
+            nodes: [
+                // 中心节点
+                { id: 'center', name: '王博渊', type: 'center', x: 0, y: 0 },
+                // 前端
+                { id: 'frontend', name: '前端开发', type: 'category', category: 'frontend' },
+                { id: 'html5', name: 'HTML5', type: 'skill', category: 'frontend', level: 5 },
+                { id: 'css3', name: 'CSS3', type: 'skill', category: 'frontend', level: 5 },
+                { id: 'js', name: 'JavaScript', type: 'skill', category: 'frontend', level: 5 },
+                { id: 'ts', name: 'TypeScript', type: 'skill', category: 'frontend', level: 4 },
+                { id: 'vue', name: 'Vue.js', type: 'skill', category: 'frontend', level: 4 },
+                { id: 'react', name: 'React', type: 'skill', category: 'frontend', level: 4 },
+                { id: 'nextjs', name: 'Next.js', type: 'skill', category: 'frontend', level: 3 },
+                // 后端
+                { id: 'backend', name: '后端开发', type: 'category', category: 'backend' },
+                { id: 'java', name: 'Java', type: 'skill', category: 'backend', level: 5 },
+                { id: 'python', name: 'Python', type: 'skill', category: 'backend', level: 5 },
+                { id: 'spring', name: 'Spring Boot', type: 'skill', category: 'backend', level: 4 },
+                { id: 'flask', name: 'Flask', type: 'skill', category: 'backend', level: 3 },
+                { id: 'nodejs', name: 'Node.js', type: 'skill', category: 'backend', level: 4 },
+                // 数据库
+                { id: 'database', name: '数据库', type: 'category', category: 'database' },
+                { id: 'mysql', name: 'MySQL', type: 'skill', category: 'database', level: 5 },
+                { id: 'redis', name: 'Redis', type: 'skill', category: 'database', level: 4 },
+                { id: 'mongodb', name: 'MongoDB', type: 'skill', category: 'database', level: 3 },
+                // AI
+                { id: 'ai', name: '人工智能', type: 'category', category: 'ai' },
+                { id: 'llm', name: '大语言模型', type: 'skill', category: 'ai', level: 5 },
+                { id: 'rag', name: 'RAG', type: 'skill', category: 'ai', level: 4 },
+                { id: 'langchain', name: 'LangChain', type: 'skill', category: 'ai', level: 3 },
+                // 游戏开发
+                { id: 'game', name: '游戏开发', type: 'category', category: 'game' },
+                { id: 'pygame', name: 'Pygame', type: 'skill', category: 'game', level: 4 },
+                { id: 'unity', name: 'Unity', type: 'skill', category: 'game', level: 3 },
+                // 工具
+                { id: 'tools', name: '工具/DevOps', type: 'category', category: 'tools' },
+                { id: 'git', name: 'Git', type: 'skill', category: 'tools', level: 5 },
+                { id: 'docker', name: 'Docker', type: 'skill', category: 'tools', level: 3 },
+                { id: 'linux', name: 'Linux', type: 'skill', category: 'tools', level: 4 },
+            ],
+            links: [
+                // 中心连接分类
+                { source: 'center', target: 'frontend' },
+                { source: 'center', target: 'backend' },
+                { source: 'center', target: 'database' },
+                { source: 'center', target: 'ai' },
+                { source: 'center', target: 'game' },
+                { source: 'center', target: 'tools' },
+                // 前端技能
+                { source: 'frontend', target: 'html5' },
+                { source: 'frontend', target: 'css3' },
+                { source: 'frontend', target: 'js' },
+                { source: 'frontend', target: 'ts' },
+                { source: 'frontend', target: 'vue' },
+                { source: 'frontend', target: 'react' },
+                { source: 'frontend', target: 'nextjs' },
+                // 后端技能
+                { source: 'backend', target: 'java' },
+                { source: 'backend', target: 'python' },
+                { source: 'backend', target: 'spring' },
+                { source: 'backend', target: 'flask' },
+                { source: 'backend', target: 'nodejs' },
+                // 数据库技能
+                { source: 'database', target: 'mysql' },
+                { source: 'database', target: 'redis' },
+                { source: 'database', target: 'mongodb' },
+                // AI技能
+                { source: 'ai', target: 'llm' },
+                { source: 'ai', target: 'rag' },
+                { source: 'ai', target: 'langchain' },
+                // 游戏技能
+                { source: 'game', target: 'pygame' },
+                { source: 'game', target: 'unity' },
+                // 工具技能
+                { source: 'tools', target: 'git' },
+                { source: 'tools', target: 'docker' },
+                { source: 'tools', target: 'linux' },
+            ]
+        };
+        
+        const categoryColors = {
+            center: '#ffffff',
+            frontend: '#3b82f6',
+            backend: '#22c55e',
+            database: '#f59e0b',
+            ai: '#a855f7',
+            game: '#ec4899',
+            tools: '#06b6d4'
+        };
+        
+        function initSkillGraph() {
+            const canvas = document.getElementById('skill-graph');
+            const ctx = canvas.getContext('2d');
+            const container = document.getElementById('skill-graph-container');
+            
+            // 设置canvas尺寸
+            function resize() {
+                canvas.width = container.clientWidth;
+                canvas.height = container.clientHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+            
+            // 初始化节点位置
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            skillData.nodes.forEach((node, i) => {
+                if (node.type === 'center') {
+                    node.x = centerX;
+                    node.y = centerY;
+                    node.vx = 0;
+                    node.vy = 0;
+                } else if (node.type === 'category') {
+                    const angle = (i / 6) * Math.PI * 2;
+                    node.x = centerX + Math.cos(angle) * 150;
+                    node.y = centerY + Math.sin(angle) * 150;
+                    node.vx = 0;
+                    node.vy = 0;
+                } else {
+                    node.x = centerX + (Math.random() - 0.5) * 400;
+                    node.y = centerY + (Math.random() - 0.5) * 400;
+                    node.vx = (Math.random() - 0.5) * 2;
+                    node.vy = (Math.random() - 0.5) * 2;
+                }
+            });
+            
+            // 力向图物理模拟
+            let dragging = null;
+            let mouseX = 0, mouseY = 0;
+            
+            canvas.addEventListener('mousedown', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                skillData.nodes.forEach(node => {
+                    const dist = Math.hypot(node.x - x, node.y - y);
+                    const radius = node.type === 'center' ? 40 : node.type === 'category' ? 30 : 20;
+                    if (dist < radius) {
+                        dragging = node;
+                    }
+                });
+            });
+            
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouseX = e.clientX - rect.left;
+                mouseY = e.clientY - rect.top;
+                
+                if (dragging) {
+                    dragging.x = mouseX;
+                    dragging.y = mouseY;
+                    dragging.vx = 0;
+                    dragging.vy = 0;
+                }
+            });
+            
+            canvas.addEventListener('mouseup', () => {
+                dragging = null;
+            });
+            
+            canvas.addEventListener('mouseleave', () => {
+                dragging = null;
+            });
+            
+            // 动画循环
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // 应用力
+                skillData.nodes.forEach(node => {
+                    if (node.type === 'center' || node === dragging) return;
+                    
+                    // 向中心的引力
+                    const dx = centerX - node.x;
+                    const dy = centerY - node.y;
+                    const dist = Math.hypot(dx, dy);
+                    
+                    if (dist > 100) {
+                        node.vx += dx * 0.0001;
+                        node.vy += dy * 0.0001;
+                    }
+                    
+                    // 阻尼
+                    node.vx *= 0.98;
+                    node.vy *= 0.98;
+                    
+                    // 随机扰动
+                    node.vx += (Math.random() - 0.5) * 0.2;
+                    node.vy += (Math.random() - 0.5) * 0.2;
+                    
+                    // 更新位置
+                    node.x += node.vx;
+                    node.y += node.vy;
+                    
+                    // 边界限制
+                    node.x = Math.max(50, Math.min(canvas.width - 50, node.x));
+                    node.y = Math.max(50, Math.min(canvas.height - 50, node.y));
+                });
+                
+                // 绘制连线
+                skillData.links.forEach(link => {
+                    const source = skillData.nodes.find(n => n.id === link.source);
+                    const target = skillData.nodes.find(n => n.id === link.target);
+                    if (!source || !target) return;
+                    
+                    const gradient = ctx.createLinearGradient(source.x, source.y, target.x, target.y);
+                    gradient.addColorStop(0, categoryColors[source.category] || '#3b82f6');
+                    gradient.addColorStop(1, categoryColors[target.category] || '#3b82f6');
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(source.x, source.y);
+                    ctx.lineTo(target.x, target.y);
+                    ctx.strokeStyle = gradient;
+                    ctx.globalAlpha = 0.3;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    ctx.globalAlpha = 1;
+                });
+                
+                // 绘制节点
+                skillData.nodes.forEach(node => {
+                    const isHovered = Math.hypot(node.x - mouseX, node.y - mouseY) < (node.type === 'center' ? 40 : node.type === 'category' ? 30 : 20);
+                    
+                    let radius, fontSize;
+                    if (node.type === 'center') {
+                        radius = 40;
+                        fontSize = 16;
+                    } else if (node.type === 'category') {
+                        radius = 30;
+                        fontSize = 12;
+                    } else {
+                        radius = 20;
+                        fontSize = 10;
+                    }
+                    
+                    if (isHovered) radius *= 1.2;
+                    
+                    // 光晕效果
+                    const glowGradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, radius * 2);
+                    glowGradient.addColorStop(0, categoryColors[node.category || node.type] + '40');
+                    glowGradient.addColorStop(1, 'transparent');
+                    ctx.fillStyle = glowGradient;
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, radius * 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // 节点圆形
+                    const nodeGradient = ctx.createRadialGradient(node.x - radius * 0.3, node.y - radius * 0.3, 0, node.x, node.y, radius);
+                    nodeGradient.addColorStop(0, '#ffffff');
+                    nodeGradient.addColorStop(1, categoryColors[node.category || node.type] || '#3b82f6');
+                    
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
+                    ctx.fillStyle = nodeGradient;
+                    ctx.fill();
+                    
+                    // 边框
+                    ctx.strokeStyle = isHovered ? '#ffffff' : categoryColors[node.category || node.type];
+                    ctx.lineWidth = isHovered ? 3 : 2;
+                    ctx.stroke();
+                    
+                    // 文字
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = `bold ${fontSize}px Poppins, sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(node.name, node.x, node.y);
+                    
+                    // 技能等级指示
+                    if (node.type === 'skill' && node.level) {
+                        for (let i = 0; i < node.level; i++) {
+                            ctx.beginPath();
+                            ctx.arc(node.x - 10 + i * 5, node.y + radius + 10, 2, 0, Math.PI * 2);
+                            ctx.fillStyle = categoryColors[node.category];
+                            ctx.fill();
+                        }
+                    }
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+        
         // ===== DOM元素获取 =====
         const glow=document.getElementById('cursorGlow'),dot=document.getElementById('cursorDot');
         document.addEventListener('mousemove',(e)=>{glow.style.transform=`translate(${e.clientX-15}px,${e.clientY-15}px)`;dot.style.transform=`translate(${e.clientX-3}px,${e.clientY-3}px)`;});
@@ -540,12 +850,24 @@
         // ===== 主流程 =====
         let isPlaying=false;
         function startExperience(){
-            bgMusic.play().catch(e=>console.log("播放失败",e));
-            lyricsPanel.classList.remove('hidden');
-            launchScreen.style.opacity='0';
-            launchScreen.style.visibility='hidden';
-            mainContent.style.opacity='1';
-            observeFade();
+            // 播放雷电动画
+            createLightning();
+            
+            // 延迟显示主内容
+            setTimeout(() => {
+                bgMusic.play().catch(e=>console.log("播放失败",e));
+                lyricsPanel.classList.remove('hidden');
+                launchScreen.style.opacity='0';
+                launchScreen.style.visibility='hidden';
+                mainContent.style.opacity='1';
+                observeFade();
+                
+                // 初始化力向图
+                setTimeout(() => {
+                    initSkillGraph();
+                }, 500);
+            }, 600);
+            
             launchScreen.removeEventListener('click',startExperience);
         }
         launchScreen.addEventListener('click',startExperience);
