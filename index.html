@@ -19,6 +19,55 @@
         .launch-content p { opacity: 0.7; margin-top: 10px; }
         @keyframes pulseGlow { 0% { text-shadow: 0 0 5px #3b82f6; transform: scale(1);} 100% { text-shadow: 0 0 25px #8b5cf6; transform: scale(1.05);} }
         #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 0; }
+        
+        /* 两侧特效容器 */
+        .side-effects { position: fixed; top: 0; width: 120px; height: 100vh; pointer-events: none; z-index: 1; overflow: hidden; }
+        .side-effects.left { left: 0; }
+        .side-effects.right { right: 0; }
+        
+        /* 浮动光粒子 */
+        .floating-particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; opacity: 0; }
+        @keyframes floatUp { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100px) scale(1); opacity: 0; } }
+        
+        /* 侧边光晕 */
+        .side-glow { position: absolute; width: 300px; height: 300px; border-radius: 50%; filter: blur(80px); opacity: 0.3; animation: pulseGlowSide 4s ease-in-out infinite; }
+        .side-effects.left .side-glow { background: radial-gradient(circle, #3b82f6, transparent); left: -150px; }
+        .side-effects.right .side-glow { background: radial-gradient(circle, #a855f7, transparent); right: -150px; }
+        @keyframes pulseGlowSide { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.3); opacity: 0.5; } }
+        
+        /* 流星效果 */
+        .meteor { position: absolute; width: 2px; height: 80px; background: linear-gradient(to bottom, transparent, #3b82f6, #fff); animation: meteorFall linear infinite; opacity: 0; }
+        .side-effects.left .meteor { transform: rotate(25deg); left: 20px; }
+        .side-effects.right .meteor { transform: rotate(-25deg); right: 20px; background: linear-gradient(to bottom, transparent, #a855f7, #fff); }
+        @keyframes meteorFall { 0% { transform: translateY(-100px) rotate(25deg); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(100vh) rotate(25deg); opacity: 0; } }
+        
+        /* 浮动几何图形 */
+        .geo-shape { position: absolute; border: 2px solid; animation: geoFloat 8s ease-in-out infinite; opacity: 0.6; }
+        .geo-shape.circle { border-radius: 50%; }
+        .geo-shape.diamond { transform: rotate(45deg); }
+        .geo-shape.triangle { width: 0; height: 0; border: none; border-left: 15px solid transparent; border-right: 15px solid transparent; border-bottom: 26px solid; }
+        @keyframes geoFloat { 0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.6; } 50% { transform: translateY(-30px) rotate(180deg); opacity: 0.3; } }
+        
+        /* 光线射出 */
+        .light-ray { position: absolute; width: 150px; height: 1px; background: linear-gradient(90deg, transparent, #3b82f6, transparent); animation: rayShoot 3s linear infinite; opacity: 0; }
+        .side-effects.left .light-ray { left: 0; transform-origin: left center; }
+        .side-effects.right .light-ray { right: 0; transform-origin: right center; background: linear-gradient(90deg, transparent, #a855f7, transparent); }
+        @keyframes rayShoot { 0% { transform: scaleX(0); opacity: 0; } 50% { transform: scaleX(1); opacity: 0.8; } 100% { transform: scaleX(0); opacity: 0; } }
+        
+        /* 闪烁星星 */
+        .twinkle-star { position: absolute; width: 4px; height: 4px; background: #fff; border-radius: 50%; animation: twinkle 2s ease-in-out infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 1; transform: scale(1.5); } }
+        
+        /* 螺旋光线 */
+        .spiral-line { position: absolute; width: 100px; height: 100px; border: 1px solid transparent; border-top-color: #3b82f6; border-radius: 50%; animation: spiralSpin 4s linear infinite; opacity: 0.5; }
+        .side-effects.right .spiral-line { border-top-color: #a855f7; }
+        @keyframes spiralSpin { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.2); } 100% { transform: rotate(360deg) scale(1); } }
+        
+        /* 能量波纹 */
+        .energy-ring { position: absolute; border: 1px solid #3b82f6; border-radius: 50%; animation: energyExpand 3s ease-out infinite; opacity: 0; }
+        .side-effects.right .energy-ring { border-color: #a855f7; }
+        @keyframes energyExpand { 0% { width: 20px; height: 20px; opacity: 0.8; } 100% { width: 150px; height: 150px; opacity: 0; } }
+        
         .main-content { position: relative; z-index: 2; opacity: 0; transition: opacity 1s ease; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
         .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; }
@@ -111,6 +160,18 @@
         </div>
     </div>
     <div id="particles-js"></div>
+    
+    <!-- 左侧特效 -->
+    <div class="side-effects left" id="leftEffects">
+        <div class="side-glow" style="top: 20%;"></div>
+        <div class="side-glow" style="top: 60%;"></div>
+    </div>
+    
+    <!-- 右侧特效 -->
+    <div class="side-effects right" id="rightEffects">
+        <div class="side-glow" style="top: 40%;"></div>
+        <div class="side-glow" style="top: 80%;"></div>
+    </div>
     <div class="main-content" id="mainContent">
         <section class="hero">
             <div class="container">
@@ -463,6 +524,139 @@
         
         // 点击机器人也能换一句
         document.getElementById('aiAvatar').addEventListener('click', changePraise);
+        
+        // ===== 两侧特效生成 =====
+        const leftEffects = document.getElementById('leftEffects');
+        const rightEffects = document.getElementById('rightEffects');
+        const colors = ['#3b82f6', '#8b5cf6', '#a855f7', '#60a5fa', '#c084fc'];
+        
+        // 创建浮动粒子
+        function createFloatingParticle(side) {
+            const particle = document.createElement('div');
+            particle.className = 'floating-particle';
+            const size = Math.random() * 8 + 4;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.left = Math.random() * 100 + 'px';
+            particle.style.animationDuration = (Math.random() * 8 + 6) + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particle.style.boxShadow = `0 0 ${size}px ${particle.style.background}`;
+            side.appendChild(particle);
+            setTimeout(() => particle.remove(), 15000);
+        }
+        
+        // 创建流星
+        function createMeteor(side) {
+            const meteor = document.createElement('div');
+            meteor.className = 'meteor';
+            meteor.style.top = Math.random() * 50 + '%';
+            meteor.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            meteor.style.animationDelay = Math.random() * 2 + 's';
+            side.appendChild(meteor);
+            setTimeout(() => meteor.remove(), 5000);
+        }
+        
+        // 创建几何图形
+        function createGeoShape(side) {
+            const shapes = ['circle', 'diamond', 'triangle'];
+            const shape = document.createElement('div');
+            shape.className = 'geo-shape ' + shapes[Math.floor(Math.random() * shapes.length)];
+            const size = Math.random() * 20 + 15;
+            if (shape.classList.contains('triangle')) {
+                shape.style.borderBottomColor = colors[Math.floor(Math.random() * colors.length)];
+            } else {
+                shape.style.width = size + 'px';
+                shape.style.height = size + 'px';
+                shape.style.borderColor = colors[Math.floor(Math.random() * colors.length)];
+            }
+            shape.style.left = Math.random() * 80 + 10 + 'px';
+            shape.style.top = Math.random() * 100 + '%';
+            shape.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            side.appendChild(shape);
+            setTimeout(() => shape.remove(), 10000);
+        }
+        
+        // 创建闪烁星星
+        function createTwinkleStar(side) {
+            const star = document.createElement('div');
+            star.className = 'twinkle-star';
+            star.style.left = Math.random() * 100 + 'px';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDuration = (Math.random() * 2 + 1) + 's';
+            star.style.animationDelay = Math.random() * 2 + 's';
+            side.appendChild(star);
+        }
+        
+        // 创建光线射出
+        function createLightRay(side) {
+            const ray = document.createElement('div');
+            ray.className = 'light-ray';
+            ray.style.top = Math.random() * 100 + '%';
+            ray.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            ray.style.animationDelay = Math.random() * 3 + 's';
+            side.appendChild(ray);
+            setTimeout(() => ray.remove(), 6000);
+        }
+        
+        // 创建螺旋线
+        function createSpiralLine(side) {
+            const spiral = document.createElement('div');
+            spiral.className = 'spiral-line';
+            spiral.style.left = Math.random() * 50 + 'px';
+            spiral.style.top = Math.random() * 100 + '%';
+            spiral.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            side.appendChild(spiral);
+            setTimeout(() => spiral.remove(), 8000);
+        }
+        
+        // 创建能量波纹
+        function createEnergyRing(side) {
+            const ring = document.createElement('div');
+            ring.className = 'energy-ring';
+            ring.style.left = Math.random() * 80 + 'px';
+            ring.style.top = Math.random() * 100 + '%';
+            ring.style.animationDelay = Math.random() * 2 + 's';
+            side.appendChild(ring);
+            setTimeout(() => ring.remove(), 4000);
+        }
+        
+        // 初始化闪烁星星
+        for (let i = 0; i < 15; i++) {
+            createTwinkleStar(leftEffects);
+            createTwinkleStar(rightEffects);
+        }
+        
+        // 定期生成特效
+        setInterval(() => {
+            createFloatingParticle(leftEffects);
+            createFloatingParticle(rightEffects);
+        }, 800);
+        
+        setInterval(() => {
+            createMeteor(leftEffects);
+            createMeteor(rightEffects);
+        }, 2000);
+        
+        setInterval(() => {
+            createGeoShape(leftEffects);
+            createGeoShape(rightEffects);
+        }, 3000);
+        
+        setInterval(() => {
+            createLightRay(leftEffects);
+            createLightRay(rightEffects);
+        }, 2500);
+        
+        setInterval(() => {
+            createSpiralLine(leftEffects);
+            createSpiralLine(rightEffects);
+        }, 4000);
+        
+        setInterval(() => {
+            createEnergyRing(leftEffects);
+            createEnergyRing(rightEffects);
+        }, 1500);
     </script>
 </body>
 </html>
