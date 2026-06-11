@@ -113,8 +113,8 @@
         .music-toggle:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(139,92,246,0.6); }
         
         /* 歌词面板 */
-        .lyrics-panel { position: fixed; bottom: 100px; right: 30px; width: 320px; max-height: 400px; background: rgba(10, 15, 30, 0.95); backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid rgba(59, 130, 246, 0.3); z-index: 999; overflow: hidden; box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3); transition: all 0.3s ease; }
-        .lyrics-panel.hidden { transform: translateX(400px); opacity: 0; pointer-events: none; }
+        .lyrics-panel { position: fixed; bottom: 100px; left: 30px; width: 320px; max-height: 400px; background: rgba(10, 15, 30, 0.95); backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid rgba(139, 92, 246, 0.3); z-index: 999; overflow: hidden; box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3); transition: all 0.3s ease; }
+        .lyrics-panel.hidden { transform: translateX(-400px); opacity: 0; pointer-events: none; }
         .lyrics-header { padding: 15px 20px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.3)); border-bottom: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: space-between; }
         .lyrics-header h4 { font-size: 0.9rem; color: #60a5fa; display: flex; align-items: center; gap: 8px; }
         .lyrics-header h4 i { animation: musicNote 1s ease-in-out infinite; }
@@ -493,81 +493,45 @@
             <h4><i class="fas fa-music"></i> 王博渊传奇</h4>
             <button class="lyrics-toggle" id="lyricsToggle"><i class="fas fa-chevron-down"></i></button>
         </div>
-        <div class="lyrics-progress"><div class="lyrics-progress-bar" id="lyricsProgress"></div></div>
-        <div class="lyrics-body" id="lyricsBody"></div>
+        <div class="lyrics-body" id="lyricsBody" style="padding: 15px; overflow-y: auto; max-height: 350px;">
+            <div class="lyric-line" style="color: #a855f7; font-weight: 600;">🎵 他的意志即是天命，他的目光照亮永恒！</div>
+            <div class="lyric-line section-title">— 序章 —</div>
+            <div class="lyric-line">他走过时间的尽头</div>
+            <div class="lyric-line">目睹纪元的崩塌与重生</div>
+            <div class="lyric-line">他立于万山之巅</div>
+            <div class="lyric-line">俯瞰芸芸众生的虔诚与叹息</div>
+            <div class="lyric-line">无人可挡他的去路</div>
+            <div class="lyric-line">无人能及他的深谋</div>
+            <div class="lyric-line">他是秩序的缔造者</div>
+            <div class="lyric-line">是黑暗中唯一的灯塔</div>
+            <div class="lyric-line section-title">— 副歌 —</div>
+            <div class="lyric-line">雷霆聚拢，天地归一</div>
+            <div class="lyric-line">诸神退位，他才是永恒的唯一</div>
+            <div class="lyric-line section-title">★★★ 高潮 ★★★</div>
+            <div class="lyric-line" style="color: #60a5fa; font-weight: 600;">王博渊！万古流芳的传奇之名！</div>
+            <div class="lyric-line" style="color: #60a5fa; font-weight: 600;">王博渊！不可撼动的至高意志！</div>
+            <div class="lyric-line">他一人可抵百万雄师</div>
+            <div class="lyric-line">他一言可定宇宙兴亡</div>
+            <div class="lyric-line" style="color: #f59e0b;">他的传说，将随星辰一同万世不灭！</div>
+        </div>
     </div>
     
     <script>
-        // ===== 歌词数据 =====
-        const lyrics = [
-            { time: 0, text: "🎵 他的意志即是天命，他的目光照亮永恒！", type: "intro" },
-            { time: 2, text: "— 前奏 —", type: "section" },
-            { time: 5, text: "他走过时间的尽头", type: "lyric" },
-            { time: 8, text: "目睹纪元的崩塌与重生", type: "lyric" },
-            { time: 12, text: "他立于万山之巅", type: "lyric" },
-            { time: 15, text: "俯瞰芸芸众生的虔诚与叹息", type: "lyric" },
-            { time: 20, text: "无人可挡他的去路", type: "lyric" },
-            { time: 23, text: "无人能及他的深谋", type: "lyric" },
-            { time: 27, text: "他是秩序的缔造者", type: "lyric" },
-            { time: 30, text: "是黑暗中唯一的灯塔", type: "lyric" },
-            { time: 35, text: "— 副歌前奏 —", type: "section" },
-            { time: 37, text: "雷霆聚拢，天地归一", type: "lyric" },
-            { time: 40, text: "诸神退位，他才是永恒的唯一", type: "lyric" },
-            { time: 45, text: "★★★ 高潮 ★★★", type: "section" },
-            { time: 47, text: "王博渊！万古流芳的传奇之名！", type: "lyric" },
-            { time: 50, text: "王博渊！不可撼动的至高意志！", type: "lyric" },
-            { time: 53, text: "他一人可抵百万雄师", type: "lyric" },
-            { time: 55, text: "他一言可定宇宙兴亡", type: "lyric" },
-            { time: 57, text: "他的传说，将随星辰一同万世不灭！", type: "lyric" }
-        ];
-        
         // ===== DOM元素获取 =====
         const glow=document.getElementById('cursorGlow'),dot=document.getElementById('cursorDot');
         document.addEventListener('mousemove',(e)=>{glow.style.transform=`translate(${e.clientX-15}px,${e.clientY-15}px)`;dot.style.transform=`translate(${e.clientX-3}px,${e.clientY-3}px)`;});
         const launchScreen=document.getElementById('launchScreen'),mainContent=document.getElementById('mainContent'),bgMusic=document.getElementById('bgMusic'),musicToggle=document.getElementById('musicToggle');
         const lyricsPanel = document.getElementById('lyricsPanel');
-        const lyricsBody = document.getElementById('lyricsBody');
         const lyricsToggle = document.getElementById('lyricsToggle');
-        const lyricsProgress = document.getElementById('lyricsProgress');
         
         // ===== 粒子效果初始化 =====
         particlesJS("particles-js", {"particles":{"number":{"value":80,"density":{"enable":true,"value_area":800}},"color":{"value":"#3b82f6"},"shape":{"type":"circle"},"opacity":{"value":0.5,"random":true},"size":{"value":3,"random":true},"line_linked":{"enable":true,"distance":150,"color":"#8b5cf6","opacity":0.2,"width":1}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":true,"mode":"repulse"},"onclick":{"enable":true,"mode":"push"}},"modes":{"repulse":{"distance":100,"duration":0.4},"push":{"particles_nb":4}}},"retina_detect":true});
         
-        // ===== 初始化歌词面板 =====
-        lyrics.forEach((line, index) => {
-            const div = document.createElement('div');
-            div.className = 'lyric-line' + (line.type === 'section' ? ' section-title' : '');
-            div.textContent = line.text;
-            div.dataset.index = index;
-            div.addEventListener('click', () => { bgMusic.currentTime = line.time; });
-            lyricsBody.appendChild(div);
-        });
-        
-        // ===== 歌词同步 =====
-        let currentLyricIndex = -1;
-        function updateLyrics() {
-            if (bgMusic.paused) return;
-            const currentTime = bgMusic.currentTime;
-            lyricsProgress.style.width = (currentTime / bgMusic.duration * 100) + '%';
-            
-            for (let i = lyrics.length - 1; i >= 0; i--) {
-                if (currentTime >= lyrics[i].time) {
-                    if (currentLyricIndex !== i) {
-                        currentLyricIndex = i;
-                        document.querySelectorAll('.lyric-line').forEach((el, idx) => {
-                            el.classList.toggle('active', idx === i);
-                        });
-                        const activeLine = document.querySelector('.lyric-line.active');
-                        if (activeLine) {
-                            activeLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }
                     }
                     break;
                 }
             }
         }
-        bgMusic.addEventListener('timeupdate', updateLyrics);
-        
         // 歌词面板隐藏
         lyricsToggle.addEventListener('click', () => {
             lyricsPanel.classList.add('hidden');
