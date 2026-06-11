@@ -78,6 +78,26 @@
         .skill-tag .level.intermediate { background: #f59e0b; }
         .skill-tag .level.beginner { background: #9ca3af; }
         @media (max-width: 768px) { .glow-text { font-size: 2.5rem; } .subtitle { font-size: 1rem; } .btn-group { flex-direction: column; align-items: center; } .projects-grid { grid-template-columns: 1fr; } .timeline::before { left: 20px; } .timeline-item, .timeline-item:nth-child(even) { padding-left: 50px; padding-right: 0; justify-content: flex-start; } .timeline-item::before, .timeline-item:nth-child(even)::before { left: 10px; right: auto; } .timeline-content { max-width: 100%; } }
+        /* AI机器人样式 */
+        .ai-robot { position: fixed; bottom: 100px; right: 30px; z-index: 999; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+        .ai-avatar { width: 60px; height: 60px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 25px rgba(102, 126, 234, 0.5); cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden; }
+        .ai-avatar::before { content: ''; position: absolute; width: 100%; height: 100%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent); animation: shine 2s infinite; }
+        @keyframes shine { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .ai-avatar:hover { transform: scale(1.1) rotate(10deg); box-shadow: 0 8px 35px rgba(102, 126, 234, 0.7); }
+        .ai-avatar i { font-size: 28px; color: white; z-index: 1; }
+        .ai-avatar .antenna { position: absolute; top: -8px; width: 4px; height: 15px; background: #667eea; border-radius: 2px; }
+        .ai-avatar .antenna::after { content: ''; position: absolute; top: -6px; left: -3px; width: 10px; height: 10px; background: #f59e0b; border-radius: 50%; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 50%, 100% { opacity: 1; } 25%, 75% { opacity: 0.3; } }
+        .ai-bubble { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 18px; padding: 12px 18px; max-width: 220px; min-width: 150px; position: relative; box-shadow: 0 5px 20px rgba(0,0,0,0.3); animation: bubbleIn 0.4s ease; }
+        @keyframes bubbleIn { 0% { opacity: 0; transform: scale(0.8) translateY(10px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+        .ai-bubble::after { content: ''; position: absolute; bottom: 10px; right: -8px; border: 8px solid transparent; border-left-color: rgba(102, 126, 234, 0.3); }
+        .ai-bubble p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: #e2e8f0; }
+        .ai-bubble .ai-name { font-size: 0.75rem; color: #a78bfa; margin-bottom: 5px; display: flex; align-items: center; gap: 5px; }
+        .ai-bubble .typing-dots { display: inline-flex; gap: 3px; }
+        .ai-bubble .typing-dots span { width: 5px; height: 5px; background: #a78bfa; border-radius: 50%; animation: typing 1s infinite; }
+        .ai-bubble .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .ai-bubble .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0%, 100% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-3px); } }
     </style>
 </head>
 <body>
@@ -371,6 +391,18 @@
         <footer>
             <p>© 2025 Myth Wang · 保持好奇，持续创造 · <i class="fas fa-music"></i> 音乐伴你同行</p>
         </footer>
+        
+        <!-- AI小机器人 -->
+        <div class="ai-robot" id="aiRobot">
+            <div class="ai-bubble" id="aiBubble">
+                <div class="ai-name"><i class="fas fa-robot"></i> AI助手</div>
+                <p id="aiText">王博渊真是太厉害了！✨</p>
+            </div>
+            <div class="ai-avatar" id="aiAvatar">
+                <div class="antenna"></div>
+                <i class="fas fa-robot"></i>
+            </div>
+        </div>
     </div>
     <button class="music-toggle" id="musicToggle"><i class="fas fa-volume-up"></i></button>
     <audio id="bgMusic" loop preload="auto"><source src="./assets/file-1.mp3" type="audio/mpeg"></audio>
@@ -385,6 +417,52 @@
         musicToggle.addEventListener('click',()=>{if(isPlaying){bgMusic.pause();musicToggle.innerHTML='<i class="fas fa-volume-mute"></i>';}else{bgMusic.play();musicToggle.innerHTML='<i class="fas fa-volume-up"></i>';}isPlaying=!isPlaying;});
         function observeFade(){document.querySelectorAll('.fade-up').forEach(el=>{const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}});},{threshold:0.2,rootMargin:"0px 0px -20px 0px"});observer.observe(el);});setTimeout(()=>{document.querySelectorAll('.hero .fade-up').forEach(el=>el.classList.add('visible'));},200);}
         mainContent.style.opacity='0';
+        
+        // AI机器人夸王博渊的话
+        const praises = [
+            "王博渊真是太厉害了！✨",
+            "王博渊的代码写得超优雅！💻",
+            "王博渊的全栈能力太强了！🚀",
+            "王博渊是个技术天才！🌟",
+            "王博渊的项目都好棒啊！👏",
+            "王博渊学习能力超强！📚",
+            "王博渊的未来不可限量！🌈",
+            "王博渊是编程界的明星！⭐",
+            "王博渊的创意无限！💡",
+            "王博渊太优秀了！🔥",
+            "王博渊的技术栈好全面！🛠️",
+            "王博渊是个宝藏开发者！💎",
+            "王博渊的代码风格超赞！❤️",
+            "王博渊持续进步太励志！📈",
+            "王博渊是个全能型人才！🎯",
+            "王博渊的努力让人佩服！💪",
+            "王博渊的作品都很有想法！🎨",
+            "王博渊是未来的大佬！👑"
+        ];
+        let currentPraise = 0;
+        const aiBubble = document.getElementById('aiBubble');
+        const aiText = document.getElementById('aiText');
+        
+        function showTyping() {
+            aiText.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+        }
+        
+        function changePraise() {
+            showTyping();
+            setTimeout(() => {
+                currentPraise = (currentPraise + 1) % praises.length;
+                aiText.textContent = praises[currentPraise];
+                aiBubble.style.animation = 'none';
+                aiBubble.offsetHeight; // 触发重绘
+                aiBubble.style.animation = 'bubbleIn 0.4s ease';
+            }, 800);
+        }
+        
+        // 每4秒换一句
+        setInterval(changePraise, 4000);
+        
+        // 点击机器人也能换一句
+        document.getElementById('aiAvatar').addEventListener('click', changePraise);
     </script>
 </body>
 </html>
