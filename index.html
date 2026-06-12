@@ -546,17 +546,25 @@
         // ===== 力向图技能展示 =====
         const skillData = {
             nodes: [
-                // 中心节点
-                { id: 'center', name: '王博渊', type: 'center', x: 0, y: 0 },
                 // 前端
                 { id: 'frontend', name: '前端开发', type: 'category', category: 'frontend' },
                 { id: 'html5', name: 'HTML5', type: 'skill', category: 'frontend', level: 5 },
                 { id: 'css3', name: 'CSS3', type: 'skill', category: 'frontend', level: 5 },
                 { id: 'js', name: 'JavaScript', type: 'skill', category: 'frontend', level: 5 },
                 { id: 'ts', name: 'TypeScript', type: 'skill', category: 'frontend', level: 4 },
-                { id: 'vue', name: 'Vue.js', type: 'skill', category: 'frontend', level: 4 },
+                { id: 'vue', name: 'Vue.js', type: 'skill', category: 'frontend', level: 5 },
                 { id: 'react', name: 'React', type: 'skill', category: 'frontend', level: 4 },
-                { id: 'nextjs', name: 'Next.js', type: 'skill', category: 'frontend', level: 3 },
+                { id: 'nextjs', name: 'Next.js', type: 'skill', category: 'frontend', level: 4 },
+                { id: 'tailwind', name: 'Tailwind', type: 'skill', category: 'frontend', level: 4 },
+                { id: 'webpack', name: 'Webpack', type: 'skill', category: 'frontend', level: 3 },
+                { id: 'vite', name: 'Vite', type: 'skill', category: 'frontend', level: 4 },
+                { id: 'canvas', name: 'Canvas', type: 'skill', category: 'frontend', level: 4 },
+                { id: 'threejs', name: 'Three.js', type: 'skill', category: 'frontend', level: 3 },
+                { id: 'sass', name: 'Sass', type: 'skill', category: 'frontend', level: 4 },
+                { id: 'redux', name: 'Redux', type: 'skill', category: 'frontend', level: 3 },
+                { id: 'pinia', name: 'Pinia', type: 'skill', category: 'frontend', level: 4 },
+                { id: 'axios', name: 'Axios', type: 'skill', category: 'frontend', level: 5 },
+                { id: 'websocket', name: 'WebSocket', type: 'skill', category: 'frontend', level: 4 },
                 // 后端
                 { id: 'backend', name: '后端开发', type: 'category', category: 'backend' },
                 { id: 'java', name: 'Java', type: 'skill', category: 'backend', level: 5 },
@@ -564,34 +572,51 @@
                 { id: 'spring', name: 'Spring Boot', type: 'skill', category: 'backend', level: 4 },
                 { id: 'flask', name: 'Flask', type: 'skill', category: 'backend', level: 3 },
                 { id: 'nodejs', name: 'Node.js', type: 'skill', category: 'backend', level: 4 },
+                { id: 'express', name: 'Express', type: 'skill', category: 'backend', level: 4 },
+                { id: 'fastapi', name: 'FastAPI', type: 'skill', category: 'backend', level: 3 },
+                { id: 'mybatis', name: 'MyBatis', type: 'skill', category: 'backend', level: 4 },
+                { id: 'graphql', name: 'GraphQL', type: 'skill', category: 'backend', level: 3 },
+                { id: 'restful', name: 'RESTful API', type: 'skill', category: 'backend', level: 5 },
+                { id: 'jwt', name: 'JWT', type: 'skill', category: 'backend', level: 4 },
+                { id: 'microservice', name: '微服务', type: 'skill', category: 'backend', level: 3 },
                 // 数据库
                 { id: 'database', name: '数据库', type: 'category', category: 'database' },
                 { id: 'mysql', name: 'MySQL', type: 'skill', category: 'database', level: 5 },
                 { id: 'redis', name: 'Redis', type: 'skill', category: 'database', level: 4 },
                 { id: 'mongodb', name: 'MongoDB', type: 'skill', category: 'database', level: 3 },
+                { id: 'postgresql', name: 'PostgreSQL', type: 'skill', category: 'database', level: 3 },
+                { id: 'elasticsearch', name: 'ES', type: 'skill', category: 'database', level: 3 },
                 // AI
                 { id: 'ai', name: '人工智能', type: 'category', category: 'ai' },
                 { id: 'llm', name: '大语言模型', type: 'skill', category: 'ai', level: 5 },
                 { id: 'rag', name: 'RAG', type: 'skill', category: 'ai', level: 4 },
                 { id: 'langchain', name: 'LangChain', type: 'skill', category: 'ai', level: 3 },
+                { id: 'embedding', name: 'Embedding', type: 'skill', category: 'ai', level: 4 },
+                { id: 'deeplearning', name: '深度学习', type: 'skill', category: 'ai', level: 3 },
+                { id: 'pytorch', name: 'PyTorch', type: 'skill', category: 'ai', level: 3 },
+                { id: 'yolo', name: 'YOLO', type: 'skill', category: 'ai', level: 3 },
+                { id: 'huggingface', name: 'Hugging Face', type: 'skill', category: 'ai', level: 3 },
+                { id: 'transformers', name: 'Transformers', type: 'skill', category: 'ai', level: 3 },
+                { id: 'openai', name: 'OpenAI API', type: 'skill', category: 'ai', level: 4 },
+                { id: 'vector', name: '向量数据库', type: 'skill', category: 'ai', level: 3 },
+                { id: 'prompt', name: 'Prompt工程', type: 'skill', category: 'ai', level: 4 },
                 // 游戏开发
                 { id: 'game', name: '游戏开发', type: 'category', category: 'game' },
                 { id: 'pygame', name: 'Pygame', type: 'skill', category: 'game', level: 4 },
                 { id: 'unity', name: 'Unity', type: 'skill', category: 'game', level: 3 },
+                { id: 'cocos', name: 'Cocos', type: 'skill', category: 'game', level: 3 },
+                { id: 'phaser', name: 'Phaser', type: 'skill', category: 'game', level: 3 },
+                { id: 'minigame', name: '微信小游戏', type: 'skill', category: 'game', level: 4 },
                 // 工具
                 { id: 'tools', name: '工具/DevOps', type: 'category', category: 'tools' },
                 { id: 'git', name: 'Git', type: 'skill', category: 'tools', level: 5 },
                 { id: 'docker', name: 'Docker', type: 'skill', category: 'tools', level: 3 },
                 { id: 'linux', name: 'Linux', type: 'skill', category: 'tools', level: 4 },
+                { id: 'nginx', name: 'Nginx', type: 'skill', category: 'tools', level: 3 },
+                { id: 'ci', name: 'CI/CD', type: 'skill', category: 'tools', level: 3 },
+                { id: 'vercel', name: 'Vercel', type: 'skill', category: 'tools', level: 4 },
             ],
             links: [
-                // 中心连接分类
-                { source: 'center', target: 'frontend' },
-                { source: 'center', target: 'backend' },
-                { source: 'center', target: 'database' },
-                { source: 'center', target: 'ai' },
-                { source: 'center', target: 'game' },
-                { source: 'center', target: 'tools' },
                 // 前端技能
                 { source: 'frontend', target: 'html5' },
                 { source: 'frontend', target: 'css3' },
@@ -600,39 +625,57 @@
                 { source: 'frontend', target: 'vue' },
                 { source: 'frontend', target: 'react' },
                 { source: 'frontend', target: 'nextjs' },
+                { source: 'frontend', target: 'tailwind' },
+                { source: 'frontend', target: 'webpack' },
+                { source: 'frontend', target: 'vite' },
+                { source: 'frontend', target: 'canvas' },
                 // 后端技能
                 { source: 'backend', target: 'java' },
                 { source: 'backend', target: 'python' },
                 { source: 'backend', target: 'spring' },
                 { source: 'backend', target: 'flask' },
                 { source: 'backend', target: 'nodejs' },
+                { source: 'backend', target: 'express' },
+                { source: 'backend', target: 'fastapi' },
+                { source: 'backend', target: 'mybatis' },
                 // 数据库技能
                 { source: 'database', target: 'mysql' },
                 { source: 'database', target: 'redis' },
                 { source: 'database', target: 'mongodb' },
+                { source: 'database', target: 'postgresql' },
+                { source: 'database', target: 'elasticsearch' },
                 // AI技能
                 { source: 'ai', target: 'llm' },
                 { source: 'ai', target: 'rag' },
                 { source: 'ai', target: 'langchain' },
+                { source: 'ai', target: 'embedding' },
+                { source: 'ai', target: 'deeplearning' },
+                { source: 'ai', target: 'pytorch' },
+                { source: 'ai', target: 'yolo' },
                 // 游戏技能
                 { source: 'game', target: 'pygame' },
                 { source: 'game', target: 'unity' },
+                { source: 'game', target: 'cocos' },
+                { source: 'game', target: 'phaser' },
+                { source: 'game', target: 'minigame' },
                 // 工具技能
                 { source: 'tools', target: 'git' },
                 { source: 'tools', target: 'docker' },
                 { source: 'tools', target: 'linux' },
+                { source: 'tools', target: 'nginx' },
+                { source: 'tools', target: 'ci' },
+                { source: 'tools', target: 'vercel' },
             ]
         };
         
-        // 墨绿色风格配色
+        // 高端配色 - 每个类别独特亮色，清晰可辨
         const categoryColors = {
-            center: '#2d5016',
-            frontend: '#3d7a2e',
-            backend: '#4a8f3c',
-            database: '#5ba34d',
-            ai: '#6bb85e',
-            game: '#7ccc6f',
-            tools: '#8de080'
+            frontend: '#00e5ff',   // 亮青色 - 非常醒目
+            backend: '#ff5722',    // 深橙色 - 鲜艳
+            database: '#e040fb',   // 亮紫色 - 清晰
+            ai: '#76ff03',         // 荧光绿 - 超清晰
+            game: '#ff4081',       // 亮粉色 - 醒目
+            tools: '#ffea00'       // 亮黄色 - 非常清晰
         };
         
         function initSkillGraph() {
@@ -804,15 +847,15 @@
                     // 跳过中心节点，不绘制
                     if (node.type === 'center') return;
                     
-                    const isHovered = Math.hypot(node.x - mouseX, node.y - mouseY) < (node.type === 'category' ? 35 : 25);
+                    const isHovered = Math.hypot(node.x - mouseX, node.y - mouseY) < (node.type === 'category' ? 50 : 35);
                     
                     let radius, fontSize;
                     if (node.type === 'category') {
-                        radius = 35;
-                        fontSize = 14;
+                        radius = 55;
+                        fontSize = 22;
                     } else {
-                        radius = 25;
-                        fontSize = 12;
+                        radius = 38;
+                        fontSize = 17;
                     }
                     
                     if (isHovered) radius *= 1.2;
@@ -841,12 +884,22 @@
                     ctx.lineWidth = isHovered ? 3 : 2;
                     ctx.stroke();
                     
+                    // 文字背景
+                    const textWidth = ctx.measureText(node.name).width;
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+                    ctx.beginPath();
+                    ctx.roundRect(node.x - textWidth/2 - 6, node.y - fontSize/2 - 2, textWidth + 12, fontSize + 4, 4);
+                    ctx.fill();
+                    
                     // 文字
                     ctx.fillStyle = '#ffffff';
                     ctx.font = `bold ${fontSize}px Poppins, sans-serif`;
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
+                    ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                    ctx.shadowBlur = 4;
                     ctx.fillText(node.name, node.x, node.y);
+                    ctx.shadowBlur = 0;
                     
                     // 技能等级指示
                     if (node.type === 'skill' && node.level) {
