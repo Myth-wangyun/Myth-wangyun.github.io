@@ -624,14 +624,15 @@
             ]
         };
         
+        // 墨绿色风格配色
         const categoryColors = {
-            center: '#ffffff',
-            frontend: '#3b82f6',
-            backend: '#22c55e',
-            database: '#f59e0b',
-            ai: '#a855f7',
-            game: '#ec4899',
-            tools: '#06b6d4'
+            center: '#2d5016',
+            frontend: '#3d7a2e',
+            backend: '#4a8f3c',
+            database: '#5ba34d',
+            ai: '#6bb85e',
+            game: '#7ccc6f',
+            tools: '#8de080'
         };
         
         function initSkillGraph() {
@@ -722,7 +723,10 @@
             
                 // 动画循环（性能优化）
                 let lastTime = 0;
+                let animationTime = 0;
                 function animate(currentTime) {
+                    animationTime += 0.02;
+                    
                     // 限制帧率为30fps
                     if (currentTime - lastTime < 33) {
                         requestAnimationFrame(animate);
@@ -732,35 +736,28 @@
                     
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     
-                    // 应用力
-                    skillData.nodes.forEach(node => {
-                        if (node.type === 'center' || node === dragging) return;
+                    // 细胞波动效果 - 每个节点像细胞一样起伏
+                    skillData.nodes.forEach((node, index) => {
+                        if (node === dragging) return;
                         
-                        // 向中心的引力
-                        const dx = centerX - node.x;
-                        const dy = centerY - node.y;
-                        const dist = Math.hypot(dx, dy);
+                        // 正弦波波动 - 每个节点有不同的相位
+                        const phase = index * 0.5;
+                        const waveX = Math.sin(animationTime + phase) * 2;
+                        const waveY = Math.cos(animationTime * 0.8 + phase) * 1.5;
                         
-                        if (dist > 100) {
-                            node.vx += dx * 0.0001;
-                            node.vy += dy * 0.0001;
-                        }
+                        // 应用波动
+                        node.x += waveX * 0.3;
+                        node.y += waveY * 0.3;
                         
-                        // 阻尼
-                        node.vx *= 0.98;
-                        node.vy *= 0.98;
+                        // 轻微阻尼
+                        node.vx *= 0.95;
+                        node.vy *= 0.95;
                         
-                        // 随机扰动（减小幅度）
-                        node.vx += (Math.random() - 0.5) * 0.1;
-                        node.vy += (Math.random() - 0.5) * 0.1;
-                        
-                        // 更新位置
-                        node.x += node.vx;
-                        node.y += node.vy;
-                        
-                        // 边界限制
-                        node.x = Math.max(50, Math.min(canvas.width - 50, node.x));
-                        node.y = Math.max(50, Math.min(canvas.height - 50, node.y));
+                        // 边界弹性
+                        if (node.x < 50) node.x = 50;
+                        if (node.x > canvas.width - 50) node.x = canvas.width - 50;
+                        if (node.y < 50) node.y = 50;
+                        if (node.y > canvas.height - 50) node.y = canvas.height - 50;
                     });
                     
                     // 绘制连线（简化渐变）
@@ -851,6 +848,14 @@
         const launchScreen=document.getElementById('launchScreen'),mainContent=document.getElementById('mainContent'),bgMusic=document.getElementById('bgMusic'),musicToggle=document.getElementById('musicToggle');
         const lyricsPanel = document.getElementById('lyricsPanel');
         const lyricsToggle = document.getElementById('lyricsToggle');
+        
+        // ===== 音乐预加载 =====
+        bgMusic.load();
+        bgMusic.preload = 'auto';
+        // 启动屏幕显示时就加载音乐
+        bgMusic.addEventListener('canplaythrough', () => {
+            console.log('音乐预加载完成');
+        }, { once: true });
         
         // ===== 粒子效果初始化 =====
         particlesJS("particles-js", {"particles":{"number":{"value":40,"density":{"enable":true,"value_area":800}},"color":{"value":"#3b82f6"},"shape":{"type":"circle"},"opacity":{"value":0.4,"random":true},"size":{"value":2,"random":true},"line_linked":{"enable":true,"distance":150,"color":"#8b5cf6","opacity":0.15,"width":1}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":true,"mode":"repulse"},"onclick":{"enable":false}},"modes":{"repulse":{"distance":80,"duration":0.4}}},"retina_detect":true});
@@ -1050,36 +1055,22 @@
             createTwinkleStar(rightEffects);
         }
         
-        // 定期生成特效（优化性能，减少频率）
+        // 定期生成特效（大幅优化性能）
         setInterval(() => {
             createFloatingParticle(leftEffects);
             createFloatingParticle(rightEffects);
-        }, 1500);
+        }, 3000);
         
         setInterval(() => {
             createMeteor(leftEffects);
             createMeteor(rightEffects);
-        }, 4000);
+        }, 8000);
         
+        // 减少其他特效数量
         setInterval(() => {
             createGeoShape(leftEffects);
             createGeoShape(rightEffects);
-        }, 6000);
-        
-        setInterval(() => {
-            createLightRay(leftEffects);
-            createLightRay(rightEffects);
-        }, 5000);
-        
-        setInterval(() => {
-            createSpiralLine(leftEffects);
-            createSpiralLine(rightEffects);
-        }, 8000);
-        
-        setInterval(() => {
-            createEnergyRing(leftEffects);
-            createEnergyRing(rightEffects);
-        }, 1500);
+        }, 12000);
     </script>
 </body>
 </html>
