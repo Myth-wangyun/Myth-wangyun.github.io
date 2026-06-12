@@ -656,7 +656,6 @@
                 { id: 'neuroscience', name: '神经科学AI', type: 'skill', category: 'ai', level: 3 },
                 { id: 'transformer', name: 'Transformer', type: 'skill', category: 'ai', level: 4 },
                 { id: 'rnn', name: 'RNN', type: 'skill', category: 'ai', level: 3 },
-                { id: 'gpt', name: 'GPT系列', type: 'skill', category: 'ai', level: 5 },
                 // 游戏开发
                 { id: 'game', name: '游戏开发', type: 'category', category: 'game' },
                 { id: 'pygame', name: 'Pygame', type: 'skill', category: 'game', level: 4 },
@@ -863,10 +862,10 @@
                 let lastTime = 0;
                 let animationTime = 0;
                 function animate(currentTime) {
-                    animationTime += 0.02;
+                    animationTime += 0.015;
                     
-                    // 限制帧率为30fps
-                    if (currentTime - lastTime < 33) {
+                    // 限制帧率为15fps，大幅优化性能
+                    if (currentTime - lastTime < 66) {
                         requestAnimationFrame(animate);
                         return;
                     }
@@ -898,15 +897,15 @@
                         if (node.y > canvas.height - 50) node.y = canvas.height - 50;
                     });
                     
-                    // 绘制连线（简化渐变）
-                    ctx.globalAlpha = 0.25;
+                    // 绘制连线（进一步简化，只画类别连线）
+                    ctx.globalAlpha = 0.15;
                     ctx.lineWidth = 1;
                     skillData.links.forEach(link => {
                         const source = skillData.nodes.find(n => n.id === link.source);
                         const target = skillData.nodes.find(n => n.id === link.target);
                         if (!source || !target) return;
-                        // 跳过连接到中心节点的线
-                        if (source.type === 'center' || target.type === 'center') return;
+                        // 只绘制类别到技能的连线，跳过技能到技能的连线以提升性能
+                        if (source.type !== 'category') return;
                         
                         ctx.beginPath();
                         ctx.moveTo(source.x, source.y);
@@ -916,7 +915,7 @@
                     });
                     ctx.globalAlpha = 1;
                     
-                    // 绘制节点
+                    // 绘制节点（性能优化版）
                 skillData.nodes.forEach(node => {
                     // 跳过中心节点，不绘制
                     if (node.type === 'center') return;
@@ -934,53 +933,43 @@
                     
                     if (isHovered) radius *= 1.2;
                     
-                    // 光晕效果
-                    const glowGradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, radius * 2);
-                    glowGradient.addColorStop(0, categoryColors[node.category || node.type] + '40');
-                    glowGradient.addColorStop(1, 'transparent');
-                    ctx.fillStyle = glowGradient;
+                    // 简化的光晕效果 - 不用gradient
+                    ctx.globalAlpha = 0.2;
                     ctx.beginPath();
-                    ctx.arc(node.x, node.y, radius * 2, 0, Math.PI * 2);
+                    ctx.arc(node.x, node.y, radius * 1.8, 0, Math.PI * 2);
+                    ctx.fillStyle = categoryColors[node.category || node.type];
                     ctx.fill();
+                    ctx.globalAlpha = 1;
                     
-                    // 节点圆形
-                    const nodeGradient = ctx.createRadialGradient(node.x - radius * 0.3, node.y - radius * 0.3, 0, node.x, node.y, radius);
-                    nodeGradient.addColorStop(0, '#ffffff');
-                    nodeGradient.addColorStop(1, categoryColors[node.category || node.type] || '#3b82f6');
-                    
+                    // 节点圆形 - 简化，不用gradient
                     ctx.beginPath();
                     ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
-                    ctx.fillStyle = nodeGradient;
+                    ctx.fillStyle = categoryColors[node.category || node.type] || '#3b82f6';
                     ctx.fill();
                     
                     // 边框
-                    ctx.strokeStyle = isHovered ? '#ffffff' : categoryColors[node.category || node.type];
-                    ctx.lineWidth = isHovered ? 3 : 2;
+                    ctx.strokeStyle = isHovered ? '#ffffff' : 'rgba(255,255,255,0.5)';
+                    ctx.lineWidth = isHovered ? 3 : 1.5;
                     ctx.stroke();
                     
-                    // 文字背景
+                    // 文字背景 - 简化
+                    ctx.font = `bold ${fontSize}px Poppins, sans-serif`;
                     const textWidth = ctx.measureText(node.name).width;
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-                    ctx.beginPath();
-                    ctx.roundRect(node.x - textWidth/2 - 6, node.y - fontSize/2 - 2, textWidth + 12, fontSize + 4, 4);
-                    ctx.fill();
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                    ctx.fillRect(node.x - textWidth/2 - 5, node.y - fontSize/2 - 3, textWidth + 10, fontSize + 6);
                     
                     // 文字
                     ctx.fillStyle = '#ffffff';
-                    ctx.font = `bold ${fontSize}px Poppins, sans-serif`;
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
-                    ctx.shadowColor = 'rgba(0,0,0,0.8)';
-                    ctx.shadowBlur = 4;
                     ctx.fillText(node.name, node.x, node.y);
-                    ctx.shadowBlur = 0;
                     
-                    // 技能等级指示
+                    // 技能等级指示 - 简化
                     if (node.type === 'skill' && node.level) {
+                        ctx.fillStyle = 'rgba(255,255,255,0.8)';
                         for (let i = 0; i < node.level; i++) {
                             ctx.beginPath();
-                            ctx.arc(node.x - 10 + i * 5, node.y + radius + 10, 2, 0, Math.PI * 2);
-                            ctx.fillStyle = categoryColors[node.category];
+                            ctx.arc(node.x - 8 + i * 5, node.y + radius + 8, 2, 0, Math.PI * 2);
                             ctx.fill();
                         }
                     }
@@ -1008,7 +997,8 @@
         }, { once: true });
         
         // ===== 粒子效果初始化 =====
-        particlesJS("particles-js", {"particles":{"number":{"value":40,"density":{"enable":true,"value_area":800}},"color":{"value":"#3b82f6"},"shape":{"type":"circle"},"opacity":{"value":0.4,"random":true},"size":{"value":2,"random":true},"line_linked":{"enable":true,"distance":150,"color":"#8b5cf6","opacity":0.15,"width":1}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":true,"mode":"repulse"},"onclick":{"enable":false}},"modes":{"repulse":{"distance":80,"duration":0.4}}},"retina_detect":true});
+        // 粒子背景 - 极简优化版
+        particlesJS("particles-js", {"particles":{"number":{"value":25,"density":{"enable":true,"value_area":800}},"color":{"value":"#3b82f6"},"shape":{"type":"circle"},"opacity":{"value":0.3,"random":true},"size":{"value":2,"random":true},"line_linked":{"enable":false},"move":{"enable":true,"speed":0.5,"direction":"none","random":true,"out_mode":"out"}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":false},"onclick":{"enable":false}}},"retina_detect":false});
         
         // 歌词面板隐藏
         lyricsToggle.addEventListener('click', () => {
@@ -1205,22 +1195,22 @@
             createTwinkleStar(rightEffects);
         }
         
-        // 定期生成特效（大幅优化性能）
+        // 定期生成特效（极简模式，最大化性能）
         setInterval(() => {
             createFloatingParticle(leftEffects);
             createFloatingParticle(rightEffects);
-        }, 3000);
+        }, 4000);
         
+        // 流星和几何图形大幅减少
         setInterval(() => {
             createMeteor(leftEffects);
             createMeteor(rightEffects);
-        }, 8000);
+        }, 15000);
         
-        // 减少其他特效数量
         setInterval(() => {
             createGeoShape(leftEffects);
             createGeoShape(rightEffects);
-        }, 12000);
+        }, 20000);
     </script>
 </body>
 </html>
