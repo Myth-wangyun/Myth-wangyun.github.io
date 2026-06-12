@@ -179,24 +179,6 @@
         .music-toggle { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; border-radius: 50%; background: rgba(59,130,246,0.9); border: none; color: white; font-size: 1.4rem; cursor: pointer; z-index: 1000; box-shadow: 0 5px 20px rgba(59,130,246,0.5); transition: all 0.3s; }
         .music-toggle:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(139,92,246,0.6); }
         
-        /* 歌词面板 */
-        .lyrics-panel { position: fixed; bottom: 100px; left: 30px; width: 320px; max-height: 400px; background: rgba(10, 15, 30, 0.95); backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid rgba(139, 92, 246, 0.3); z-index: 999; overflow: hidden; box-shadow: 0 10px 40px rgba(139, 92, 246, 0.3); transition: all 0.3s ease; }
-        .lyrics-panel.hidden { transform: translateX(-400px); opacity: 0; pointer-events: none; }
-        .lyrics-header { padding: 15px 20px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.3)); border-bottom: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: space-between; }
-        .lyrics-header h4 { font-size: 0.9rem; color: #60a5fa; display: flex; align-items: center; gap: 8px; }
-        .lyrics-header h4 i { animation: musicNote 1s ease-in-out infinite; }
-        @keyframes musicNote { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
-        .lyrics-toggle { background: none; border: none; color: #9ca3af; cursor: pointer; font-size: 1rem; transition: color 0.3s; }
-        .lyrics-toggle:hover { color: #fff; }
-        .lyrics-body { padding: 20px; max-height: 320px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(59, 130, 246, 0.5) transparent; }
-        .lyrics-body::-webkit-scrollbar { width: 4px; }
-        .lyrics-body::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.5); border-radius: 2px; }
-        .lyric-line { padding: 10px 15px; margin: 5px 0; border-radius: 10px; transition: all 0.3s ease; color: #6b7280; font-size: 0.9rem; line-height: 1.6; cursor: pointer; }
-        .lyric-line:hover { background: rgba(59, 130, 246, 0.1); color: #9ca3af; }
-        .lyric-line.active { background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.3)); color: #fff; transform: scale(1.02); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); font-weight: 600; }
-        .lyric-line.section-title { color: #a855f7; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 15px; font-weight: 600; }
-        .lyrics-progress { height: 3px; background: rgba(255, 255, 255, 0.1); }
-        .lyrics-progress-bar { height: 100%; background: linear-gradient(90deg, #3b82f6, #a855f7); width: 0%; transition: width 0.1s linear; }
         .game-preview { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.1)); border: 1px solid rgba(245, 158, 11, 0.3); margin-top: 15px; padding: 15px; border-radius: 12px; }
         .game-preview h4 { color: #f59e0b; margin-bottom: 5px; }
         .game-preview small { color: #9ca3af; font-size: 0.8rem; }
@@ -499,34 +481,7 @@
     <audio id="bgMusic" loop preload="auto"><source src="./assets/file-1.mp3" type="audio/mpeg"></audio>
     
     <!-- 歌词面板 -->
-    <div class="lyrics-panel hidden" id="lyricsPanel">
-        <div class="lyrics-header">
-            <h4><i class="fas fa-music"></i> 永恒之王</h4>
-            <button class="lyrics-toggle" id="lyricsToggle"><i class="fas fa-chevron-down"></i></button>
-        </div>
-        <div class="lyrics-body" id="lyricsBody" style="padding: 15px; overflow-y: auto; max-height: 350px;">
-            <div class="lyric-line" style="color: #a855f7; font-weight: 600;">🎵 他的意志即是天命，他的目光照亮永恒！</div>
-            <div class="lyric-line section-title">— 序章 —</div>
-            <div class="lyric-line">他走过时间的尽头</div>
-            <div class="lyric-line">目睹纪元的崩塌与重生</div>
-            <div class="lyric-line">他立于万山之巅</div>
-            <div class="lyric-line">俯瞰芸芸众生的虔诚与叹息</div>
-            <div class="lyric-line">无人可挡他的去路</div>
-            <div class="lyric-line">无人能及他的深谋</div>
-            <div class="lyric-line">他是秩序的缔造者</div>
-            <div class="lyric-line">是黑暗中唯一的灯塔</div>
-            <div class="lyric-line section-title">— 副歌 —</div>
-            <div class="lyric-line">雷霆聚拢，天地归一</div>
-            <div class="lyric-line">诸神退位，他才是永恒的唯一</div>
-            <div class="lyric-line section-title">★★★ 高潮 ★★★</div>
-            <div class="lyric-line" style="color: #60a5fa; font-weight: 600;">王博渊！万古流芳的传奇之名！</div>
-            <div class="lyric-line" style="color: #60a5fa; font-weight: 600;">王博渊！不可撼动的至高意志！</div>
-            <div class="lyric-line">他一人可抵百万雄师</div>
-            <div class="lyric-line">他一言可定宇宙兴亡</div>
-            <div class="lyric-line" style="color: #f59e0b;">他的传说，将随星辰一同万世不灭！</div>
-        </div>
-    </div>
-    
+
     <script>
         // ===== 雷电动画 =====
         function createLightning() {
