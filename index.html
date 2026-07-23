@@ -12,13 +12,6 @@
         body { font-family: 'Poppins', sans-serif; background: #0a0f1e; color: #ffffff; overflow-x: hidden; scroll-behavior: smooth; }
         .cursor-glow { width: 30px; height: 30px; background: radial-gradient(circle, rgba(59,130,246,0.6), rgba(139,92,246,0)); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.05s linear; mix-blend-mode: screen; }
         .cursor-dot { width: 6px; height: 6px; background: #3b82f6; border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000; transition: transform 0.05s linear; }
-        .launch-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0a0f1e; z-index: 100000; display: flex; justify-content: center; align-items: center; flex-direction: column; backdrop-filter: blur(10px); transition: opacity 0.8s ease, visibility 0.8s; cursor: pointer; }
-        .launch-content { text-align: center; animation: pulseGlow 1.5s infinite alternate; }
-        .launch-content i { font-size: 80px; color: #3b82f6; margin-bottom: 20px; }
-        .launch-content h2 { font-size: 2rem; letter-spacing: 2px; }
-        .launch-content p { opacity: 0.7; margin-top: 10px; }
-        @keyframes pulseGlow { 0% { text-shadow: 0 0 5px #3b82f6; transform: scale(1);} 100% { text-shadow: 0 0 25px #8b5cf6; transform: scale(1.05);} }
-        
         /* 雷电动画层 */
         .lightning-overlay {
             position: fixed;
@@ -223,14 +216,6 @@
     <!-- 雷电动画层 -->
     <div class="lightning-overlay" id="lightningOverlay"></div>
     
-    <!-- 启动屏幕 -->
-    <div class="launch-screen" id="launchScreen">
-        <div class="launch-content">
-            <i class="fas fa-rocket"></i>
-            <h2>MYTH WANG</h2>
-            <p>点击任意位置启动体验</p>
-        </div>
-    </div>
     <div id="particles-js"></div>
     
     <!-- 左侧特效 -->
@@ -939,26 +924,17 @@
         // ===== DOM元素获取 =====
         const glow=document.getElementById('cursorGlow'),dot=document.getElementById('cursorDot');
         document.addEventListener('mousemove',(e)=>{glow.style.transform=`translate(${e.clientX-15}px,${e.clientY-15}px)`;dot.style.transform=`translate(${e.clientX-3}px,${e.clientY-3}px)`;});
-        const launchScreen=document.getElementById('launchScreen'),mainContent=document.getElementById('mainContent'),bgMusic=document.getElementById('bgMusic'),musicToggle=document.getElementById('musicToggle');
-        const lyricsPanel = document.getElementById('lyricsPanel');
-        const lyricsToggle = document.getElementById('lyricsToggle');
+        const mainContent=document.getElementById('mainContent'),bgMusic=document.getElementById('bgMusic'),musicToggle=document.getElementById('musicToggle');
         
         // ===== 音乐预加载 =====
         bgMusic.load();
         bgMusic.preload = 'auto';
-        // 启动屏幕显示时就加载音乐
         bgMusic.addEventListener('canplaythrough', () => {
             console.log('音乐预加载完成');
         }, { once: true });
         
         // ===== 粒子效果初始化 =====
-        // 粒子背景 - 极简优化版
         particlesJS("particles-js", {"particles":{"number":{"value":25,"density":{"enable":true,"value_area":800}},"color":{"value":"#3b82f6"},"shape":{"type":"circle"},"opacity":{"value":0.3,"random":true},"size":{"value":2,"random":true},"line_linked":{"enable":false},"move":{"enable":true,"speed":0.5,"direction":"none","random":true,"out_mode":"out"}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":false},"onclick":{"enable":false}}},"retina_detect":false});
-        
-        // 歌词面板隐藏
-        lyricsToggle.addEventListener('click', () => {
-            lyricsPanel.classList.add('hidden');
-        });
         
         // ===== 主流程 =====
         let isPlaying=false;
@@ -972,12 +948,8 @@
             
             // 显示主内容
             bgMusic.play().catch(e=>console.log("播放失败",e));
-            lyricsPanel.classList.remove('hidden');
-            launchScreen.style.opacity='0';
-            launchScreen.style.visibility='hidden';
             mainContent.style.opacity='1';
             observeFade();
-            launchScreen.removeEventListener('click',startExperience);
             
             // 初始化力向图
             setTimeout(() => {
@@ -988,14 +960,13 @@
                 }
             }, 800);
         }
-        launchScreen.addEventListener('click',startExperience);
+        startExperience();
         musicToggle.addEventListener('click',()=>{
             if(isPlaying){
                 bgMusic.pause();
                 musicToggle.innerHTML='<i class="fas fa-volume-mute"></i>';
             }else{
                 bgMusic.play();
-                lyricsPanel.classList.remove('hidden');
                 musicToggle.innerHTML='<i class="fas fa-volume-up"></i>';
             }
             isPlaying=!isPlaying;
