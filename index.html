@@ -56,7 +56,7 @@
         /* 力向图技能展示 */
         #skill-graph-container {
             width: 100%;
-            height: 1000px;
+            height: 1400px;
             position: relative;
             margin: 30px 0;
             background: linear-gradient(135deg, rgba(15, 25, 45, 0.9), rgba(30, 20, 50, 0.9));
@@ -969,19 +969,62 @@
         const glow=document.getElementById('cursorGlow'),dot=document.getElementById('cursorDot');
         document.addEventListener('mousemove',(e)=>{glow.style.transform=`translate(${e.clientX-15}px,${e.clientY-15}px)`;dot.style.transform=`translate(${e.clientX-3}px,${e.clientY-3}px)`;});
         const mainContent=document.getElementById('mainContent'),bgMusic=document.getElementById('bgMusic'),musicToggle=document.getElementById('musicToggle');
+        let isPlaying = false;
         
         // ===== 音乐预加载 =====
         bgMusic.load();
         bgMusic.preload = 'auto';
         bgMusic.addEventListener('canplaythrough', () => {
             console.log('音乐预加载完成');
+            // 自动播放音乐
+            attemptAutoPlay();
         }, { once: true });
+        
+        // ===== 自动播放音乐 =====
+        function attemptAutoPlay() {
+            // 尝试直接播放
+            const playPromise = bgMusic.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log('音乐自动播放成功');
+                    isPlaying = true;
+                    musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                }).catch(error => {
+                    console.log('自动播放被阻止，等待用户交互');
+                    // 如果自动播放失败，等待用户第一次交互后播放
+                    setupInteractionPlay();
+                });
+            }
+        }
+        
+        // 设置用户交互后播放音乐
+        function setupInteractionPlay() {
+            const playOnInteraction = () => {
+                if (!isPlaying) {
+                    bgMusic.play().then(() => {
+                        isPlaying = true;
+                        musicToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+                        console.log('用户交互后音乐开始播放');
+                    }).catch(e => console.log('播放失败:', e));
+                }
+                // 移除事件监听
+                document.removeEventListener('click', playOnInteraction);
+                document.removeEventListener('touchstart', playOnInteraction);
+                document.removeEventListener('keydown', playOnInteraction);
+                document.removeEventListener('mousemove', playOnInteraction);
+            };
+            
+            // 监听用户交互事件
+            document.addEventListener('click', playOnInteraction, { once: true });
+            document.addEventListener('touchstart', playOnInteraction, { once: true });
+            document.addEventListener('keydown', playOnInteraction, { once: true });
+            document.addEventListener('mousemove', playOnInteraction, { once: true });
+        }
         
         // ===== 粒子效果初始化 =====
         particlesJS("particles-js", {"particles":{"number":{"value":25,"density":{"enable":true,"value_area":800}},"color":{"value":"#3b82f6"},"shape":{"type":"circle"},"opacity":{"value":0.3,"random":true},"size":{"value":2,"random":true},"line_linked":{"enable":false},"move":{"enable":true,"speed":0.5,"direction":"none","random":true,"out_mode":"out"}},"interactivity":{"detect_on":"canvas","events":{"onhover":{"enable":false},"onclick":{"enable":false}}},"retina_detect":false});
         
         // ===== 主流程 =====
-        let isPlaying=false;
         function startExperience(){
             try {
                 // 播放雷电动画
@@ -991,7 +1034,6 @@
             }
             
             // 显示主内容
-            bgMusic.play().catch(e=>console.log("播放失败",e));
             mainContent.style.opacity='1';
             observeFade();
             
